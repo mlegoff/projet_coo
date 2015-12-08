@@ -95,4 +95,8 @@ public class FabriqueChambre {
 		}
 		return listChambre;
 	}
+	
+	public void putindegitdemerde(){
+		String st = "NIKE TA MERE";
+	}
 }
