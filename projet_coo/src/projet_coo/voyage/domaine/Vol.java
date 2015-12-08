@@ -1,16 +1,19 @@
 package projet_coo.voyage.domaine;
 
+import java.util.Date;
+
 public class Vol {
 	
 	private int id;
 	private int idVilleDepart;
 	private int idVilleArrivee;
-	private String date;
+	private Date date;
 	private int duree;
 	private int heure;
 	private int nbJoursAnnulation;
 	private int nbPassager1ere;
 	private int nbPassager2eme;
+	
 	public int getId() {
 		return id;
 	}
@@ -20,7 +23,7 @@ public class Vol {
 	public int getIdVilleArrivee() {
 		return idVilleArrivee;
 	}
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 	public int getDuree() {
@@ -38,7 +41,7 @@ public class Vol {
 	public int getNbPassager2eme() {
 		return nbPassager2eme;
 	}
-	public Vol(int id, int idVilleDepart, int idVilleArrivee, String date, int duree, int heure, int nbJoursAnnulation,
+	public Vol(int id, int idVilleDepart, int idVilleArrivee, Date date, int duree, int heure, int nbJoursAnnulation,
 			int nbPassager1ere, int nbPassager2eme) {
 		super();
 		this.id = id;

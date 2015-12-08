@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import projet_coo.voyage.domaine.Chambre;
 import projet_coo.voyage.domaine.Hotel;
@@ -70,5 +72,27 @@ public class FabriqueChambre {
 			e.printStackTrace();
 			
 		}
+	}
+	
+	public List<Chambre> chambreParId(int id){
+		List<Chambre> listChambre = new ArrayList<Chambre>();
+		try {
+			PreparedStatement stmt = conn.prepareStatement("SELECT idchambre,categorie,tarif,capacite,nbchambre,idhotel FROM chambre where idhotel = ?");
+			stmt.clearParameters();
+			stmt.setInt(1, id);			
+			ResultSet resultat = stmt.executeQuery();	
+			while(resultat.next()){
+				
+				Chambre tmp = new Chambre(resultat.getInt("nbchambre"),resultat.getInt("capacite"),resultat.getInt("tarif"),resultat.getString("categorie"),resultat.getInt("idhotel"),resultat.getInt("idchambre"));
+				listChambre.add(tmp);
+				
+			}	
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		}
+		return listChambre;
 	}
 }

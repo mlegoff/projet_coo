@@ -5,7 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import projet_coo.voyage.domaine.Chambre;
 import projet_coo.voyage.domaine.Vol;
@@ -42,30 +44,33 @@ public class FabriqueVol {
 			stmt.clearParameters();
 			stmt.setInt(1, idVilleDepart);
 			stmt.setInt(2, idVilleArrivee);
-			java.sql.Date dateSQL = new java.sql.Date();
-			stmt.setDate(parameterIndex, x);
-			stmt.setInt(3, capacite);
-			stmt.setInt(4, nbchambre);
-			stmt.setInt(5, idHotel);
+			java.sql.Date dateSQL = new java.sql.Date(date.getTime());
+			stmt.setDate(3,dateSQL);
+			stmt.setInt(4, duree);
+			stmt.setInt(5, heure);
+			stmt.setInt(6, nbJoursAnnulation);
+			stmt.setInt(7, nbPassager1ere);
+			stmt.setInt(8, nbPassager2eme);
 			stmt.execute();
 			
-			PreparedStatement st = conn.prepareStatement("SELECT LAST_INSERT_ID() as id FROM chambre");
+			PreparedStatement st = conn.prepareStatement("SELECT LAST_INSERT_ID() as id FROM vol");
 			st.clearParameters();
 			ResultSet resultat = st.executeQuery();		
 			resultat.next();
 			int id = resultat.getInt("id");
-			newChambre = new Chambre(nbchambre,capacite,tarif,categorie,idHotel,id);
+			newVol = new Vol( id,  idVilleDepart,  idVilleArrivee,  date,  duree,  heure,  nbJoursAnnulation,
+					nbPassager1ere,  nbPassager2eme);
 		
 		}
 		catch(SQLException e){
 			e.printStackTrace();
 		}
-		return newChambre;
+		return newVol;
 	}
 
-	public void deleteChambre(int id){
+	public void deleteVol(int id){
 		try {
-			PreparedStatement stmt = conn.prepareStatement("DELETE from chambre WHERE id = ?");
+			PreparedStatement stmt = conn.prepareStatement("DELETE from vol WHERE id = ?");
 			stmt.clearParameters();
 			stmt.setInt(1, id);			
 			stmt.execute();			
@@ -74,5 +79,53 @@ public class FabriqueVol {
 			e.printStackTrace();
 			
 		}
+	}
+	
+	public List<Vol> volParVilleDepart(int idVille){
+		List<Vol> listVol = new ArrayList<Vol>();
+		try {
+			PreparedStatement stmt = conn.prepareStatement("SELECT idvol,idvilledepart,idvillearrivee,date,duree,heure,nbjoursannulation,nbpassager1ere,nbpassager2eme FROM vol where idvilledepart = ?");
+			stmt.clearParameters();
+			stmt.setInt(1, idVille);			
+			ResultSet resultat = stmt.executeQuery();	
+			while(resultat.next()){
+				java.sql.Date dte = resultat.getDate("date");
+				Date dateTmp = new Date(dte.getTime());
+				Vol tmp = new Vol(resultat.getInt("idvol"),resultat.getInt("idvilledepart"),resultat.getInt("idvillearrivee"),dateTmp,resultat.getInt("duree"),
+						resultat.getInt("heure"),resultat.getInt("nbJoursAnnulation"),resultat.getInt("nbPassager1ere"),resultat.getInt("nbPassager2eme"));
+				listVol.add(tmp);
+				
+			}	
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		}
+		return listVol;
+	}
+	
+	public List<Vol> volParVilleArrivee(int idVille){
+		List<Vol> listVol = new ArrayList<Vol>();
+		try {
+			PreparedStatement stmt = conn.prepareStatement("SELECT idvol,idvilledepart,idvillearrivee,date,duree,heure,nbjoursannulation,nbpassager1ere,nbpassager2eme FROM vol where idvilledepart = ?");
+			stmt.clearParameters();
+			stmt.setInt(1, idVille);			
+			ResultSet resultat = stmt.executeQuery();	
+			while(resultat.next()){
+				java.sql.Date dte = resultat.getDate("date");
+				Date dateTmp = new Date(dte.getTime());
+				Vol tmp = new Vol(resultat.getInt("idvol"),resultat.getInt("idvilledepart"),resultat.getInt("idvillearrivee"),dateTmp,resultat.getInt("duree"),
+						resultat.getInt("heure"),resultat.getInt("nbJoursAnnulation"),resultat.getInt("nbPassager1ere"),resultat.getInt("nbPassager2eme"));
+				listVol.add(tmp);
+				
+			}	
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		}
+		return listVol;
 	}
 }

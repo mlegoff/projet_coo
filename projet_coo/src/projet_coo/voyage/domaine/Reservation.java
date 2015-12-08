@@ -3,23 +3,48 @@ package projet_coo.voyage.domaine;
 public class Reservation {
 	
 	private int idClient;
-	private String villeDepart;
-	private String villeArrive;
+	private int villeDepart;
+	private int villeArrive;
 	private int dateAller;
 	private int dateRetour;
 	private int nbVoyageurs;
-	private int idResa;
+	private int idchambre;
+	private int id;
+	private int idVolDepart;
+	private int idVolRetour;
 		
-	public int getIdResa() {
-		return idResa;
+	public Reservation(int idClient, int villeDepart, int villeArrive,
+			int dateAller, int dateRetour, int nbVoyageurs,
+			int idchambre, int id,int idVolDepart,int idVolRetour) {
+		super();
+		this.idClient = idClient;
+		this.villeDepart = villeDepart;
+		this.villeArrive = villeArrive;
+		this.dateAller = dateAller;
+		this.dateRetour = dateRetour;
+		this.nbVoyageurs = nbVoyageurs;
+		this.idchambre = idchambre;
+		this.id = id;
+	}
+	public int getId() {
+		return id;
+	}
+	public int getIdchambre() {
+		return idchambre;
+	}
+	public int getIdVolDepart() {
+		return idVolDepart;
+	}
+	public int getIdVolRetour() {
+		return idVolRetour;
 	}
 	public int getIdClient() {
 		return idClient;
 	}
-	public String getVilleDepart() {
+	public int getVilleDepart() {
 		return villeDepart;
 	}
-	public String getVilleArrive() {
+	public int getVilleArrive() {
 		return villeArrive;
 	}
 	public int getDateAller() {

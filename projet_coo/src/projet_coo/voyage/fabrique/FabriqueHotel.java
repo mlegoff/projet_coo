@@ -5,12 +5,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-import projet_coo.voyage.domaine.Client;
 import projet_coo.voyage.domaine.Hotel;
 
 public class FabriqueHotel {
-	private FabriqueHotel _instance;
+	static FabriqueHotel _instance;
 	private Connection conn;
 
 	private FabriqueHotel(){
@@ -26,11 +27,11 @@ public class FabriqueHotel {
 
 	}
 
-	public FabriqueHotel getInstance(){
+	public static  FabriqueHotel getInstance(){
 		if(_instance == null){
-			this._instance = new FabriqueHotel();
+			_instance = new FabriqueHotel();
 		}
-		return this._instance;
+		return _instance;
 	}
 
 	public Hotel createNewHotel(String nom, int idVille){
@@ -56,6 +57,27 @@ public class FabriqueHotel {
 		return newHotel;
 	}
 
+	public List<Hotel> hotelParId(int id){
+		List<Hotel> listHotel = new ArrayList<Hotel>();
+		try {
+			PreparedStatement stmt = conn.prepareStatement("SELECT idhotel,nom,idville FROM hotel where idhotel = ?");
+			stmt.clearParameters();
+			stmt.setInt(1, id);			
+			ResultSet resultat = stmt.executeQuery();	
+			while(resultat.next()){
+				
+				Hotel tmp = new Hotel(resultat.getString("nom"),resultat.getInt("idhotel"),resultat.getInt("idville"));
+				listHotel.add(tmp);
+				
+			}	
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		}
+		return listHotel;
+	}
 	public void deleteHotel(int id){
 		try {
 			PreparedStatement stmt = conn.prepareStatement("DELETE from hotel WHERE id = ?");
