@@ -1,0 +1,80 @@
+package projet_coo.voyage.ihm;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.LayoutManager;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+
+public class PrincipalPanel  extends JPanel{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JLabel reservation,vol,ville,hotel;
+	private JButton reservationButton,volButton,clientButton,hotelButton;
+	private LayoutManager layout;
+	
+	public PrincipalPanel(){
+		super();
+		initialise();
+		
+	}
+	
+	public void createButtons(){
+		ImageIcon volIcon = createImageIcon("/airplane_icon.png","volIcon");
+		volButton = new JButton(volIcon);
+		volButton.setBackground(Color.WHITE);
+		volButton.setPreferredSize(new Dimension(250, 250));
+		volButton.setBorder(new EmptyBorder(0,0,0,0));
+		vol = new JLabel("Gestion des vols");
+		this.add(vol);
+		ImageIcon resaIcon = createImageIcon("/resa_icon.jpg","resaIcon");
+		reservationButton = new JButton(resaIcon);
+		reservationButton.setBackground(Color.WHITE);
+		reservationButton.setPreferredSize(new Dimension(250, 250));
+		reservationButton.setBorder(new EmptyBorder(0,0,0,0));
+		ImageIcon clientIcon = createImageIcon("/client_icon.png","clientIcon");
+		clientButton = new JButton(clientIcon);
+		clientButton.setBackground(Color.WHITE);
+		clientButton.setPreferredSize(new Dimension(250, 250));
+		clientButton.setBorder(new EmptyBorder(0,0,0,0));
+		ImageIcon hotelIcon = createImageIcon("/hotel_icon.png","hotelIcon");
+		hotelButton = new JButton(hotelIcon);
+		hotelButton.setBackground(Color.WHITE);
+		hotelButton.setPreferredSize(new Dimension(250, 250));
+		hotelButton.setBorder(new EmptyBorder(0,0,0,0));
+		this.add(volButton);
+		this.add(reservationButton);
+		this.add(hotelButton);
+		this.add(clientButton);
+		
+	}
+	   private  ImageIcon createImageIcon(String path, String description) {
+			      java.net.URL imgURL = PrincipalPanel.class.getResource(path);
+			      
+			      if (imgURL != null) {
+			         return new ImageIcon(imgURL, description);
+			      } else {            
+			         System.err.println("Couldn't find file: " + path);
+			         return null;
+			      }
+			   }
+	public void initialise(){
+		this.setBackground(Color.WHITE);
+		Border border = this.getBorder();
+		Border margin = new EmptyBorder(200,10,10,10);
+		this.setBorder(new CompoundBorder(border, margin));
+		createButtons();
+		
+	}
+
+}
