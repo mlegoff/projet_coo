@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -13,7 +15,7 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
-public class PrincipalPanel  extends JPanel{
+public class PrincipalPanel  extends JPanel implements ActionListener{
 	
 	/**
 	 * 
@@ -74,6 +76,46 @@ public class PrincipalPanel  extends JPanel{
 		Border margin = new EmptyBorder(200,10,10,10);
 		this.setBorder(new CompoundBorder(border, margin));
 		createButtons();
+		
+	}
+	
+	public void removeButtons(){
+		this.remove(clientButton);
+		this.remove(volButton);
+		this.remove(reservationButton);
+		this.remove(hotelButton);
+	}
+	
+	public void reservation(){
+		removeButtons();
+	}
+	
+	public void client(){
+		removeButtons();
+	}
+	
+	public void vol(){
+		removeButtons();
+	}
+	
+	public void hotel(){
+		removeButtons();
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object source = e.getSource();
+		if(source == reservationButton){
+			reservation();
+		}
+		if(source == volButton){
+			vol();
+		}
+		if(source == clientButton){
+			client();
+		}
+		if(source == hotelButton){
+			hotel();
+		}
 		
 	}
 

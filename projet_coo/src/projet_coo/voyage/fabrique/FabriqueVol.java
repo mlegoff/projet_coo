@@ -13,7 +13,7 @@ import projet_coo.voyage.domaine.Chambre;
 import projet_coo.voyage.domaine.Vol;
 
 public class FabriqueVol {
-	private FabriqueVol _instance;
+	private static FabriqueVol _instance;
 	private Connection conn;
 
 	private FabriqueVol(){
@@ -29,11 +29,11 @@ public class FabriqueVol {
 
 	}
 
-	public FabriqueVol getInstance(){
+	public static FabriqueVol getInstance(){
 		if(_instance == null){
-			this._instance = new FabriqueVol();
+			_instance = new FabriqueVol();
 		}
-		return this._instance;
+		return _instance;
 	}
 
 	public Vol createNewVol(int idVilleDepart, int idVilleArrivee, Date date, int duree, int heure, int nbJoursAnnulation,
@@ -127,5 +127,29 @@ public class FabriqueVol {
 			
 		}
 		return listVol;
+	}
+	
+	public List<Vol> getAllVol(){
+		List<Vol> listVol = new ArrayList<Vol>();
+		try {
+			PreparedStatement stmt = conn.prepareStatement("SELECT idvol,idvilledepart,idvillearrivee,date,duree,heure,nbjoursannulation,nbpassager1ere,nbpassager2eme FROM vol ");
+			stmt.clearParameters();			
+			ResultSet resultat = stmt.executeQuery();	
+			while(resultat.next()){
+				java.sql.Date dte = resultat.getDate("date");
+				Date dateTmp = new Date(dte.getTime());
+				Vol tmp = new Vol(resultat.getInt("idvol"),resultat.getInt("idvilledepart"),resultat.getInt("idvillearrivee"),dateTmp,resultat.getInt("duree"),
+						resultat.getInt("heure"),resultat.getInt("nbJoursAnnulation"),resultat.getInt("nbPassager1ere"),resultat.getInt("nbPassager2eme"));
+				listVol.add(tmp);
+				
+			}	
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		}
+		return listVol;
+
 	}
 }
