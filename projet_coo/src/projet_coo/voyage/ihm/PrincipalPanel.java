@@ -9,11 +9,15 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+
+import projet_coo.voyage.domaine.Ville;
 
 public class PrincipalPanel  extends JPanel implements ActionListener{
 	
@@ -27,8 +31,7 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 	
 	public PrincipalPanel(){
 		super();
-		initialise();
-		
+		initialise();	
 	}
 	
 	public void createButtons(){
@@ -36,9 +39,7 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 		volButton = new JButton(volIcon);
 		volButton.setBackground(Color.WHITE);
 		volButton.setPreferredSize(new Dimension(250, 250));
-		volButton.setBorder(new EmptyBorder(0,0,0,0));
-		vol = new JLabel("Gestion des vols");
-		this.add(vol);
+		volButton.setBorder(new EmptyBorder(0,0,0,0));		
 		ImageIcon resaIcon = createImageIcon("/resa_icon.jpg","resaIcon");
 		reservationButton = new JButton(resaIcon);
 		reservationButton.setBackground(Color.WHITE);
@@ -53,30 +54,45 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 		hotelButton = new JButton(hotelIcon);
 		hotelButton.setBackground(Color.WHITE);
 		hotelButton.setPreferredSize(new Dimension(250, 250));
-		hotelButton.setBorder(new EmptyBorder(0,0,0,0));
+		hotelButton.setBorder(new EmptyBorder(0,0,0,0));	
+		
 		this.add(volButton);
 		this.add(reservationButton);
 		this.add(hotelButton);
 		this.add(clientButton);
 		
+		volButton.addActionListener(this);
+		reservationButton.addActionListener(this);
+		clientButton.addActionListener(this);
+		hotelButton.addActionListener(this);
+		
+		
 	}
-	   private  ImageIcon createImageIcon(String path, String description) {
-			      java.net.URL imgURL = PrincipalPanel.class.getResource(path);
+	private  ImageIcon createImageIcon(String path, String description) {
+	     java.net.URL imgURL = PrincipalPanel.class.getResource(path);
 			      
-			      if (imgURL != null) {
-			         return new ImageIcon(imgURL, description);
-			      } else {            
-			         System.err.println("Couldn't find file: " + path);
-			         return null;
-			      }
-			   }
-	public void initialise(){
+	     if (imgURL != null) {
+		    return new ImageIcon(imgURL, description);
+		 } else {            
+		    System.err.println("Couldn't find file: " + path);
+		    return null;
+		}
+   }
+	public void initialise(){		
 		this.setBackground(Color.WHITE);
 		Border border = this.getBorder();
 		Border margin = new EmptyBorder(200,10,10,10);
 		this.setBorder(new CompoundBorder(border, margin));
-		createButtons();
-		
+		createButtons();		
+	}
+	
+	public void init2(){
+		this.removeAll();
+		this.setBackground(Color.WHITE);
+		Border border = this.getBorder();
+		Border margin = new EmptyBorder(0,0,10,10);
+		this.setBorder(new CompoundBorder(border, margin));
+		createButtons();	
 	}
 	
 	public void removeButtons(){
@@ -88,24 +104,32 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 	
 	public void reservation(){
 		removeButtons();
+		this.repaint();
 	}
 	
 	public void client(){
 		removeButtons();
+		this.repaint();
 	}
 	
 	public void vol(){
 		removeButtons();
+		this.repaint();
+		JInternalFrame fenetre = new JInternalFrame();		
+		fenetre.add(new VillePanel(this));
+		fenetre.setVisible(true);
+		this.add(fenetre);
 	}
 	
 	public void hotel(){
 		removeButtons();
+		this.repaint();
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		if(source == reservationButton){
-			reservation();
+			reservation();			
 		}
 		if(source == volButton){
 			vol();
