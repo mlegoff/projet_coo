@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import projet_coo.voyage.domaine.Chambre;
-import projet_coo.voyage.domaine.Hotel;
 
 public class FabriqueChambre {
 	private FabriqueChambre _instance;

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import projet_coo.voyage.domaine.Chambre;
 import projet_coo.voyage.domaine.Vol;
 
 public class FabriqueVol {
