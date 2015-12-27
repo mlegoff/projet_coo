@@ -39,7 +39,7 @@ public class HotelPanel  extends JPanel implements ActionListener,ListSelectionL
 		private JButton supprimer = new JButton("supprimer");
 		private JButton retour = new JButton("Retour");
 		private JTextField addHotelNomField;
-		private int ville;
+		private int ville = -1;
 		private ChambrePanel chambrePane;
 		
 		public HotelPanel(PrincipalPanel princ,ChambrePanel chambrePane) {
@@ -119,11 +119,13 @@ public class HotelPanel  extends JPanel implements ActionListener,ListSelectionL
 		private void ajouter(){
 			String hotel = addHotelNomField.getText();
 			hotel.trim();
-			if(hotel != null && !hotel.equals("")){
+			if(hotel != null && !hotel.equals("") && this.ville != -1){
 				Hotel newhotel = FabriqueHotel.getInstance().createNewHotel(hotel, this.ville);
 				objetHotel.addElement(newhotel);				
+			}else if(this.ville == -1){
+				JOptionPane.showMessageDialog(null, "Veuillez selectionner une ville");
 			}else{
-				JOptionPane.showMessageDialog(null, "Veuillez saisir une ville");
+				JOptionPane.showMessageDialog(null, "Veuillez saisir un hotel");
 			}
 		}
 		
@@ -140,7 +142,7 @@ public class HotelPanel  extends JPanel implements ActionListener,ListSelectionL
 				ajouter();
 			}else if (source == supprimer){
 				if(lesHotels.getSelectionModel().isSelectionEmpty()){
-					JOptionPane.showMessageDialog(null, "Veuillez selectionner une ville");
+					JOptionPane.showMessageDialog(null, "Veuillez selectionner un hotel");
 				}else{
 					int index = lesHotels.getSelectionModel().getMinSelectionIndex();
 					int id = lesHotels.getModel().getElementAt(index).getId();
@@ -164,7 +166,10 @@ public class HotelPanel  extends JPanel implements ActionListener,ListSelectionL
 			
 		}	
 		
-				
+		public void clear(){
+			this.ville = -1;
+			this.chambrePane.clear();
+		}
 
 }
 

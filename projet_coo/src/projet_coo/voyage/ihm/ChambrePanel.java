@@ -141,16 +141,20 @@ public class ChambrePanel extends JPanel implements ActionListener,ListSelection
 		
 		private void ajouter(){
 			String cat = addChambreCatField.getText();
-			int tarif = Integer.parseInt(addChambreTarifField.getText(),10);
-			int cap = Integer.parseInt(addChambreCapField.getText(),10);
-			int nb = Integer.parseInt(addChambrenbField.getText(),10);
-			cat.trim();					
-			
-			if(cat != null && !cat.equals("") && tarif != 0  && cap != 0  && nb != 0){
-				Chambre newChambre = FabriqueChambre.getInstance().createNewChambre(cap, tarif, cat, nb, this.hotel);
+			String tarif = addChambreTarifField.getText();
+			String cap = addChambreCapField.getText();
+			String nb = addChambrenbField.getText();
+			cat.trim();tarif.trim();cap.trim();nb.trim();			
+			if(cat != null && !cat.equals("") && tarif != null && !tarif.equals("") && cap != null && !cap.equals("") && nb != null && !nb.equals("") && this.hotel != -1){
+				int tarif2 = Integer.parseInt(addChambreTarifField.getText(),10);
+				int cap2 = Integer.parseInt(addChambreCapField.getText(),10);
+				int nb2 = Integer.parseInt(addChambrenbField.getText(),10);
+				Chambre newChambre = FabriqueChambre.getInstance().createNewChambre(cap2, tarif2, cat, nb2, this.hotel);
 				this.objetChambre.addElement(newChambre);
+			}else if(this.hotel == -1){
+				JOptionPane.showMessageDialog(null, "Veuillez selectionner un hotel");
 			}else{
-				JOptionPane.showMessageDialog(null, "Veuillez saisir une ville");
+				JOptionPane.showMessageDialog(null, "Veuillez saisir les infos");
 			}
 		}
 		
@@ -184,6 +188,11 @@ public class ChambrePanel extends JPanel implements ActionListener,ListSelection
 			// TODO Auto-generated method stub
 			
 		}	
+		
+		public void clear(){
+			this.hotel = -1;
+			chambreinit();
+		}
 			
 
 }
