@@ -78,6 +78,30 @@ public class FabriqueHotel {
 		}
 		return listHotel;
 	}
+	
+	
+	public List<Hotel> hotelParVille(int id){
+		List<Hotel> listHotel = new ArrayList<Hotel>();
+		try {
+			PreparedStatement stmt = conn.prepareStatement("SELECT idhotel,nom,idville FROM hotel where idville = ?");
+			stmt.clearParameters();
+			stmt.setInt(1, id);			
+			ResultSet resultat = stmt.executeQuery();	
+			while(resultat.next()){
+				
+				Hotel tmp = new Hotel(resultat.getString("nom"),resultat.getInt("idhotel"),resultat.getInt("idville"));
+				listHotel.add(tmp);
+				
+			}	
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		}
+		return listHotel;
+	}
+	
 	public void deleteHotel(int id){
 		try {
 			PreparedStatement stmt = conn.prepareStatement("DELETE from hotel WHERE id = ?");

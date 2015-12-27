@@ -39,20 +39,21 @@ public class VillePanel extends JPanel implements ActionListener,ListSelectionLi
 	private JButton supprimer = new JButton("supprimer");
 	private JButton retour = new JButton("Retour");
 	private JTextField addvilleField;
+	private HotelPanel hotelPan;
 	
-	public VillePanel(PrincipalPanel princ) {
+	public VillePanel(PrincipalPanel princ,HotelPanel hotelPan) {
 		super();
 		JPrinc = princ;
 		this.initial();		
+		this.hotelPan = hotelPan;
 	}
 	
 	
 	public void initial(){
 		this.setPreferredSize(new Dimension(300, 300));
 		this.setBackground(Color.BLACK);
-		BoxLayout boxlayout = new BoxLayout(this,BoxLayout.Y_AXIS);
-		FlowLayout layouleft = new FlowLayout(FlowLayout.RIGHT);
-		this.setLayout(boxlayout);
+		BoxLayout boxlayout = new BoxLayout(this,BoxLayout.Y_AXIS);		
+		this.setLayout(boxlayout);	
 		
 		
 		//bouton 
@@ -146,7 +147,9 @@ public class VillePanel extends JPanel implements ActionListener,ListSelectionLi
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		// TODO Auto-generated method stub
+		int debutIndex = lesvilles.getSelectionModel().getMinSelectionIndex();   
+		this.hotelPan.setVille(lesvilles.getModel().getElementAt(debutIndex).getid());
+		this.hotelPan.hotelinit();
 		
 	}	
 		

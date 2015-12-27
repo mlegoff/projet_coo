@@ -22,5 +22,9 @@ public class Hotel {
 	public int getIdVille() {
 		return idVille;
 	}
+	
+	public String toString(){
+		return nom ;
+	}
 
 }

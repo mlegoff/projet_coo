@@ -2,8 +2,10 @@ package projet_coo.voyage.ihm;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -114,16 +116,23 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 	
 	public void vol(){
 		removeButtons();
-		this.repaint();
-		JInternalFrame fenetre = new JInternalFrame();		
-		fenetre.add(new VillePanel(this));
-		fenetre.setVisible(true);
-		this.add(fenetre);
+		this.repaint();	
+		
 	}
 	
 	public void hotel(){
 		removeButtons();
 		this.repaint();
+		JInternalFrame fenetre = new JInternalFrame();	
+		JInternalFrame fenetre2 = new JInternalFrame();	
+		
+		HotelPanel hotelpan = new HotelPanel(this);
+		fenetre2.add(hotelpan);
+		fenetre2.setVisible(true);
+		fenetre.add(new VillePanel(this,hotelpan));
+		fenetre.setVisible(true);
+		this.add(fenetre);		
+		this.add(fenetre2);	
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
