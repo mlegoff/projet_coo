@@ -146,7 +146,7 @@ public class VillePanel extends JPanel implements ActionListener,ListSelectionLi
 
 
 	@Override
-	public void valueChanged(ListSelectionEvent e) {
+	public void valueChanged(ListSelectionEvent e) {		
 		int debutIndex = lesvilles.getSelectionModel().getMinSelectionIndex();   
 		this.hotelPan.setVille(lesvilles.getModel().getElementAt(debutIndex).getid());
 		this.hotelPan.hotelinit();

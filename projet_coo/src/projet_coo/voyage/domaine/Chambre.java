@@ -36,5 +36,8 @@ public class Chambre {
 		return id;
 	}
 	
+	public String toString(){
+		return "Chambre de categorie " + categorie + " pour " + capacite + " personnes " + ", prix " + tarif + "€, nb chambre " + nbChambre;
+	}
 
 }

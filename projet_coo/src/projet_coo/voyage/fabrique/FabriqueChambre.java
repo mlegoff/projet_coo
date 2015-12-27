@@ -11,7 +11,7 @@ import java.util.List;
 import projet_coo.voyage.domaine.Chambre;
 
 public class FabriqueChambre {
-	private FabriqueChambre _instance;
+	private static FabriqueChambre _instance;
 	private Connection conn;
 
 	private FabriqueChambre(){
@@ -27,11 +27,11 @@ public class FabriqueChambre {
 
 	}
 
-	public FabriqueChambre getInstance(){
+	public static FabriqueChambre getInstance(){
 		if(_instance == null){
-			this._instance = new FabriqueChambre();
+			_instance = new FabriqueChambre();
 		}
-		return this._instance;
+		return _instance;
 	}
 
 	public Chambre createNewChambre(int capacite, int tarif, String categorie,int nbchambre, int idHotel){
@@ -62,7 +62,7 @@ public class FabriqueChambre {
 
 	public void deleteChambre(int id){
 		try {
-			PreparedStatement stmt = conn.prepareStatement("DELETE from chambre WHERE id = ?");
+			PreparedStatement stmt = conn.prepareStatement("DELETE from chambre WHERE idchambre = ?");
 			stmt.clearParameters();
 			stmt.setInt(1, id);			
 			stmt.execute();			

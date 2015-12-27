@@ -125,14 +125,20 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 		this.repaint();
 		JInternalFrame fenetre = new JInternalFrame();	
 		JInternalFrame fenetre2 = new JInternalFrame();	
+		JInternalFrame fenetre3 = new JInternalFrame();	
 		
-		HotelPanel hotelpan = new HotelPanel(this);
+		ChambrePanel chambrePane = new ChambrePanel(this);
+		HotelPanel hotelpan = new HotelPanel(this,chambrePane);
+		
+		fenetre3.add(chambrePane);
+		fenetre3.setVisible(true);
 		fenetre2.add(hotelpan);
 		fenetre2.setVisible(true);
 		fenetre.add(new VillePanel(this,hotelpan));
 		fenetre.setVisible(true);
 		this.add(fenetre);		
 		this.add(fenetre2);	
+		this.add(fenetre3);
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {

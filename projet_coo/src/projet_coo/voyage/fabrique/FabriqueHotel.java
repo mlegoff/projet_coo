@@ -48,6 +48,7 @@ public class FabriqueHotel {
 			ResultSet resultat = st.executeQuery();		
 			resultat.next();
 			int idHotel = resultat.getInt("id");
+			System.out.println("ajout! " + nom);
 			new Hotel(nom,idHotel,idVille);
 		
 		}
@@ -104,7 +105,7 @@ public class FabriqueHotel {
 	
 	public void deleteHotel(int id){
 		try {
-			PreparedStatement stmt = conn.prepareStatement("DELETE from hotel WHERE id = ?");
+			PreparedStatement stmt = conn.prepareStatement("DELETE from hotel WHERE idhotel = ?");
 			stmt.clearParameters();
 			stmt.setInt(1, id);			
 			stmt.execute();			
