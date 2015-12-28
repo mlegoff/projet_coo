@@ -81,8 +81,8 @@ import projet_coo.voyage.domaine.Ville;
 				PreparedStatement stmt = conn.prepareStatement("DELETE from ville WHERE idville = ?");
 				stmt.clearParameters();
 				stmt.setInt(1, id);			
-				stmt.execute();			
-
+				stmt.execute();	
+				FabriqueHotel.getInstance().deleteHotelByVille(id);
 			} catch (SQLException e) {
 				e.printStackTrace();
 				
