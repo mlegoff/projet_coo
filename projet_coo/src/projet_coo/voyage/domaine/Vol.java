@@ -9,7 +9,7 @@ public class Vol {
 	private int idVilleArrivee;
 	private Date date;
 	private int duree;
-	private int heure;
+	private String heure;
 	private int nbJoursAnnulation;
 	private int nbPassager1ere;
 	private int nbPassager2eme;
@@ -29,7 +29,7 @@ public class Vol {
 	public int getDuree() {
 		return duree;
 	}
-	public int getHeure() {
+	public String getHeure() {
 		return heure;
 	}
 	public int getNbJoursAnnulation() {
@@ -41,7 +41,7 @@ public class Vol {
 	public int getNbPassager2eme() {
 		return nbPassager2eme;
 	}
-	public Vol(int id, int idVilleDepart, int idVilleArrivee, Date date, int duree, int heure, int nbJoursAnnulation,
+	public Vol(int id, int idVilleDepart, int idVilleArrivee, Date date, int duree, String heure, int nbJoursAnnulation,
 			int nbPassager1ere, int nbPassager2eme) {
 		super();
 		this.id = id;
@@ -55,6 +55,8 @@ public class Vol {
 		this.nbPassager2eme = nbPassager2eme;
 	}
 	
-	
+	public String toString(){
+		return this.idVilleDepart+"-"+this.idVilleArrivee+" à "+this.heure;
+	}
 
 }

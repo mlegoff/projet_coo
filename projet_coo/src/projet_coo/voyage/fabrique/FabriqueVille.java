@@ -89,5 +89,34 @@ import projet_coo.voyage.domaine.Ville;
 			}
 		}
 		
+		public Ville getVilleByName(String ville){
+			Ville v = null;
+			try {
+				PreparedStatement stmt = conn.prepareStatement("SELECT idville,nom FROM ville WHERE nom = ?");
+				stmt.clearParameters();
+				stmt.setString(1, ville);
+				ResultSet resultat = stmt.executeQuery();	
+				resultat.next();
+				v = new Ville(resultat.getString("nom"),resultat.getInt("idville"));
+				
+			} catch (SQLException e) {
+				
+			}
+			return v;
+		}
+		public boolean villeExists(String ville){
+			boolean result = false;
+			try {
+				PreparedStatement stmt = conn.prepareStatement("SELECT nom FROM ville WHERE nom = ?");
+				stmt.clearParameters();
+				 stmt.setString(1, ville);		
+				 ResultSet resultat = stmt.executeQuery();
+				 return resultat.next();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+			return result;
+		}
 }
 

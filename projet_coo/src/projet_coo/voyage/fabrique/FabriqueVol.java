@@ -35,7 +35,7 @@ public class FabriqueVol {
 		return _instance;
 	}
 
-	public Vol createNewVol(int idVilleDepart, int idVilleArrivee, Date date, int duree, int heure, int nbJoursAnnulation,
+	public Vol createNewVol(int idVilleDepart, int idVilleArrivee, Date date, int duree, String heure, int nbJoursAnnulation,
 			int nbPassager1ere, int nbPassager2eme){
 		Vol newVol = null;
 		try {
@@ -46,7 +46,7 @@ public class FabriqueVol {
 			java.sql.Date dateSQL = new java.sql.Date(date.getTime());
 			stmt.setDate(3,dateSQL);
 			stmt.setInt(4, duree);
-			stmt.setInt(5, heure);
+			stmt.setString(5, heure);
 			stmt.setInt(6, nbJoursAnnulation);
 			stmt.setInt(7, nbPassager1ere);
 			stmt.setInt(8, nbPassager2eme);
@@ -91,7 +91,7 @@ public class FabriqueVol {
 				java.sql.Date dte = resultat.getDate("date");
 				Date dateTmp = new Date(dte.getTime());
 				Vol tmp = new Vol(resultat.getInt("idvol"),resultat.getInt("idvilledepart"),resultat.getInt("idvillearrivee"),dateTmp,resultat.getInt("duree"),
-						resultat.getInt("heure"),resultat.getInt("nbJoursAnnulation"),resultat.getInt("nbPassager1ere"),resultat.getInt("nbPassager2eme"));
+						resultat.getString("heure"),resultat.getInt("nbJoursAnnulation"),resultat.getInt("nbPassager1ere"),resultat.getInt("nbPassager2eme"));
 				listVol.add(tmp);
 				
 			}	
@@ -115,7 +115,7 @@ public class FabriqueVol {
 				java.sql.Date dte = resultat.getDate("date");
 				Date dateTmp = new Date(dte.getTime());
 				Vol tmp = new Vol(resultat.getInt("idvol"),resultat.getInt("idvilledepart"),resultat.getInt("idvillearrivee"),dateTmp,resultat.getInt("duree"),
-						resultat.getInt("heure"),resultat.getInt("nbJoursAnnulation"),resultat.getInt("nbPassager1ere"),resultat.getInt("nbPassager2eme"));
+						resultat.getString("heure"),resultat.getInt("nbJoursAnnulation"),resultat.getInt("nbPassager1ere"),resultat.getInt("nbPassager2eme"));
 				listVol.add(tmp);
 				
 			}	
@@ -138,7 +138,7 @@ public class FabriqueVol {
 				java.sql.Date dte = resultat.getDate("date");
 				Date dateTmp = new Date(dte.getTime());
 				Vol tmp = new Vol(resultat.getInt("idvol"),resultat.getInt("idvilledepart"),resultat.getInt("idvillearrivee"),dateTmp,resultat.getInt("duree"),
-						resultat.getInt("heure"),resultat.getInt("nbJoursAnnulation"),resultat.getInt("nbPassager1ere"),resultat.getInt("nbPassager2eme"));
+						resultat.getString("heure"),resultat.getInt("nbJoursAnnulation"),resultat.getInt("nbPassager1ere"),resultat.getInt("nbPassager2eme"));
 				listVol.add(tmp);
 				
 			}	

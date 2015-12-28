@@ -1,5 +1,6 @@
 package projet_coo.voyage.ihm;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -30,6 +31,7 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 	private JLabel reservation,vol,ville,hotel;
 	private JButton reservationButton,volButton,clientButton,hotelButton;
 	private LayoutManager layout;
+	private GestionPanel gpanel;
 	
 	public PrincipalPanel(){
 		super();
@@ -117,6 +119,22 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 	public void vol(){
 		removeButtons();
 		this.repaint();	
+		this.setBorder(new EmptyBorder(0,0,0,0));
+		this.setLayout(new BorderLayout());
+		this.gpanel = new VolPanel(new Dimension(this.getWidth()/2,this.getHeight()));
+		//gpanel.setPreferredSize(new Dimension(this.getWidth()/2,this.getHeight()));
+		gpanel.setBackground(Color.WHITE);
+//		JInternalFrame fenetre = new JInternalFrame();
+//		fenetre.add(gpanel);
+//		fenetre.setVisible(true);
+		this.add(gpanel, BorderLayout.WEST);
+
+		JPanel panelTmpn = new JPanel();
+		panelTmpn.setPreferredSize(new Dimension(this.getWidth()/2,this.getHeight()));
+		panelTmpn.setBackground(Color.WHITE);
+		this.add(panelTmpn, BorderLayout.EAST);
+		this.validate();
+		
 		
 	}
 	
