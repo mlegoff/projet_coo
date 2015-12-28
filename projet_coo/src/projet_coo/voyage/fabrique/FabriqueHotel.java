@@ -100,7 +100,23 @@ public class FabriqueHotel {
 			e.printStackTrace();
 			
 		}
-		return listHotel;
+		return listHotel;		
+	}
+	
+	public void deleteHotelByVille(int id){
+		try {
+			PreparedStatement stmt = conn.prepareStatement("select idhotel from hotel WHERE idville = ?");
+			stmt.clearParameters();
+			stmt.setInt(1, id);			
+			ResultSet resultat = stmt.executeQuery();
+			while(resultat.next()){
+				deleteHotel(resultat.getInt("idhotel"));
+			}
+			System.out.println("suppression des hotel pour la ville ! " + id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		}
 	}
 	
 	public void deleteHotel(int id){
@@ -109,7 +125,7 @@ public class FabriqueHotel {
 			stmt.clearParameters();
 			stmt.setInt(1, id);			
 			stmt.execute();			
-
+			FabriqueChambre.getInstance().deleteChambreByHotel(id);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			

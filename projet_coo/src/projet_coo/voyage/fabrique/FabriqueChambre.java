@@ -59,6 +59,22 @@ public class FabriqueChambre {
 		}
 		return newChambre;
 	}
+	
+	public void deleteChambreByHotel (int id){
+		try {
+			PreparedStatement stmt = conn.prepareStatement("select idchambre from chambre WHERE idhotel = ?");
+			stmt.clearParameters();
+			stmt.setInt(1, id);			
+			ResultSet resultat = stmt.executeQuery();
+			while(resultat.next()){
+				deleteChambre(resultat.getInt("idchambre"));
+			}
+			System.out.println("suppression des hotel pour la ville ! " + id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		}
+	}
 
 	public void deleteChambre(int id){
 		try {
