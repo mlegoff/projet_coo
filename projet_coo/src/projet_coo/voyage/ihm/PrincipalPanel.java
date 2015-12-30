@@ -31,8 +31,7 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 	private JLabel reservation,vol,ville,hotel;
 	private JButton reservationButton,volButton,clientButton,hotelButton;
 	private LayoutManager layout;
-	private GestionPanel gpanel;
-	
+	private Color bleuStyle = new Color(7, 174,240);
 	public PrincipalPanel(){
 		super();
 		initialise();	
@@ -118,21 +117,16 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 	
 	public void vol(){
 		removeButtons();
+		this.setBackground(bleuStyle);
 		this.repaint();	
 		this.setBorder(new EmptyBorder(0,0,0,0));
 		this.setLayout(new BorderLayout());
-		this.gpanel = new VolPanel(new Dimension(this.getWidth()/2,this.getHeight()));
-		//gpanel.setPreferredSize(new Dimension(this.getWidth()/2,this.getHeight()));
+		DetailVolPanel panelDroite = new DetailVolPanel(new Dimension(this.getWidth()/2,this.getHeight()));
+		VolPanel gpanel = new VolPanel(new Dimension(this.getWidth()/2,this.getHeight()),panelDroite);
+		panelDroite.setVolPanel(gpanel);
 		gpanel.setBackground(Color.WHITE);
-//		JInternalFrame fenetre = new JInternalFrame();
-//		fenetre.add(gpanel);
-//		fenetre.setVisible(true);
 		this.add(gpanel, BorderLayout.WEST);
-
-		JPanel panelTmpn = new JPanel();
-		panelTmpn.setPreferredSize(new Dimension(this.getWidth()/2,this.getHeight()));
-		panelTmpn.setBackground(Color.WHITE);
-		this.add(panelTmpn, BorderLayout.EAST);
+		this.add(panelDroite, BorderLayout.EAST);
 		this.validate();
 		
 		

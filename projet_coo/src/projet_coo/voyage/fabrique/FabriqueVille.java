@@ -6,11 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
 import projet_coo.voyage.domaine.Hotel;
 import projet_coo.voyage.domaine.Ville;
+import projet_coo.voyage.domaine.Vol;
 
 	public class FabriqueVille {
 		static FabriqueVille _instance;
@@ -117,6 +119,24 @@ import projet_coo.voyage.domaine.Ville;
 				e.printStackTrace();
 			}	
 			return result;
+		}
+		
+		public Ville getVilleById(int id){
+			Ville v = null;
+			try {
+				PreparedStatement stmt = conn.prepareStatement("SELECT idville,nom FROM ville WHERE idville = ?");
+				stmt.clearParameters();	
+				stmt.setInt(1, id);
+				ResultSet resultat = stmt.executeQuery();
+				if(resultat.next()){
+				v = new Ville(resultat.getString("nom"),resultat.getInt("idville"));
+				}
+				
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		}
+		return v;
 		}
 }
 

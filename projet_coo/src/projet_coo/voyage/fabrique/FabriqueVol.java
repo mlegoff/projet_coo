@@ -69,7 +69,7 @@ public class FabriqueVol {
 
 	public void deleteVol(int id){
 		try {
-			PreparedStatement stmt = conn.prepareStatement("DELETE from vol WHERE id = ?");
+			PreparedStatement stmt = conn.prepareStatement("DELETE from vol WHERE idvol = ?");
 			stmt.clearParameters();
 			stmt.setInt(1, id);			
 			stmt.execute();			
@@ -150,5 +150,25 @@ public class FabriqueVol {
 		}
 		return listVol;
 
+	}
+	
+	public Vol getVolById(int id){
+		Vol v = null;
+		try {
+			PreparedStatement stmt = conn.prepareStatement("SELECT idvol,idvilledepart,idvillearrivee,date,duree,heure,nbjoursannulation,nbpassager1ere,nbpassager2eme FROM vol WHERE idvol = ?");
+			stmt.clearParameters();	
+			stmt.setInt(1, id);
+			ResultSet resultat = stmt.executeQuery();	
+			if(resultat.next()){
+			java.sql.Date dte = resultat.getDate("date");
+			Date dateTmp = new Date(dte.getTime());
+			v = new Vol(resultat.getInt("idvol"),resultat.getInt("idvilledepart"),resultat.getInt("idvillearrivee"),dateTmp,resultat.getInt("duree"),
+					resultat.getString("heure"),resultat.getInt("nbJoursAnnulation"),resultat.getInt("nbPassager1ere"),resultat.getInt("nbPassager2eme"));
+			}
+	} catch (SQLException e) {
+		e.printStackTrace();
+		
+	}
+	return v;
 	}
 }

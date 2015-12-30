@@ -44,9 +44,15 @@ JLabel departLabel,arriveLabel,dateLabel,dureeLabel,nb2Label,nb1Label,annuLabel,
 private JPanel formulaireAjout,searchPanel;
 Dimension d;
 Color bleuStyle;
+DefaultListModel<Vol> listModel;
+JList<Vol> list;
+DetailVolPanel detailPanel;
 Font lato = new Font("Lato",Font.CENTER_BASELINE,14);
-	public VolPanel(Dimension d){
+
+
+	public VolPanel(Dimension d, DetailVolPanel detailPanel){
 		super();
+		this.detailPanel = detailPanel;
 		this.bleuStyle = new Color(7, 174,240);
 		this.d = d;
 		this.setPreferredSize(d);
@@ -85,7 +91,14 @@ Font lato = new Font("Lato",Font.CENTER_BASELINE,14);
 	}
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		// TODO Auto-generated method stub
+		if (list.getSelectionModel().isSelectionEmpty()) {
+			 System.out.println("Rien n'est selectionne.");				 
+		}else{
+			int debutIndex = list.getSelectionModel().getMinSelectionIndex();   
+			this.detailPanel.updateVol(list.getModel().getElementAt(debutIndex).getId());
+			
+		}
+		
 		
 	}
 	public void listVolInit(){
@@ -100,6 +113,13 @@ Font lato = new Font("Lato",Font.CENTER_BASELINE,14);
 		list.setModel(listModel);
 		list.getSelectionModel().addListSelectionListener(this);
 		list.setForeground(bleuStyle);
+		list.setFont(lato);
+	}
+	
+	public void suppSelectedVol(){
+		Vol volSupp = this.list.getModel().getElementAt(list.getSelectionModel().getMinSelectionIndex());
+		this.listModel.removeElement(volSupp);
+		FabriqueVol.getInstance().deleteVol(volSupp.getId());
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
