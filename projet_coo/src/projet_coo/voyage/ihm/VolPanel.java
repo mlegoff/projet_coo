@@ -87,7 +87,11 @@ Font lato = new Font("Lato",Font.CENTER_BASELINE,14);
 	}
 	public void searchAction(){
 		
-		searchField.getText();
+		List<Vol> vols = FabriqueVol.getInstance().searchVol(searchField.getText());
+		listModel.clear();
+		for(Vol v : vols){
+			listModel.addElement(v);
+		}
 	}
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
@@ -223,7 +227,7 @@ Font lato = new Font("Lato",Font.CENTER_BASELINE,14);
 		ajoutVol.setForeground(Color.white);
 		ajoutVol.setFont(lato);
 		this.formulaireAjout = new JPanel();
-		this.formulaireAjout.setPreferredSize(new Dimension(d.width, 405));
+		this.formulaireAjout.setPreferredSize(new Dimension(d.width, 415));
 		this.formulaireAjout.add(depart);
 		this.formulaireAjout.add(arrive);
 		this.formulaireAjout.add(date);
@@ -239,7 +243,7 @@ Font lato = new Font("Lato",Font.CENTER_BASELINE,14);
 		TitledBorder bd = new TitledBorder("Ajout d'un nouveau vol");
 		bd.setTitleFont(lato);
 		bd.setTitleColor(bleuStyle);
-		formulaireAjout.setBorder(BorderFactory.createLineBorder(bleuStyle));
+		formulaireAjout.setBorder(new EmptyBorder(0,0,10,0));
 		ajouter.addActionListener(this);
 		formulaireAjout.validate();
 		this.add(formulaireAjout);
