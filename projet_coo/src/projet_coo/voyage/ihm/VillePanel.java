@@ -91,9 +91,15 @@ public class VillePanel extends JPanel implements ActionListener,ListSelectionLi
 		boutonpanel2.add(supprimer);
 		boutonpanel2.add(retour);
 		
+		panelScrol.setPreferredSize(new Dimension(this.getWidth(),400));
+		
+		this.add(panelScrol);	
+		
+		panelScrol.setPreferredSize(new Dimension(this.getWidth(),400));
 		this.add(panelScrol);	
 		this.add(boutonpanel);
 		this.add(boutonpanel2);
+		
 		
 		initVille();
 		
@@ -126,7 +132,7 @@ public class VillePanel extends JPanel implements ActionListener,ListSelectionLi
 	public void actionPerformed(ActionEvent e) {
 		Object source =  e.getSource();
 		if(source == retour){			
-			JPrinc.init2();
+			JPrinc.retour();
 			System.out.println("retour");
 		}
 		else if(source == ajouter){

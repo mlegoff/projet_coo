@@ -92,15 +92,7 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 		createButtons();		
 	}
 	
-	public void init2(){
-		this.removeAll();
-		this.setBackground(Color.WHITE);
-		Border border = this.getBorder();
-		Border margin = new EmptyBorder(0,0,10,10);
-		this.setBorder(new CompoundBorder(border, margin));
-		createButtons();	
-	}
-	
+		
 	public void removeButtons(){
 		this.remove(clientButton);
 		this.remove(volButton);
@@ -139,23 +131,25 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 	public void hotel(){
 		removeButtons();
 		this.repaint();
-		JInternalFrame fenetre = new JInternalFrame();	
-		JInternalFrame fenetre2 = new JInternalFrame();	
-		JInternalFrame fenetre3 = new JInternalFrame();	
+		//JInternalFrame fenetre = new JInternalFrame();	
+		//JInternalFrame fenetre2 = new JInternalFrame();	
+		//JInternalFrame fenetre3 = new JInternalFrame();	
+		this.setBorder(new EmptyBorder(0,0,0,0));
+		this.setLayout(new BorderLayout());
 		
 		ChambrePanel chambrePane = new ChambrePanel(this);
 		HotelPanel hotelpan = new HotelPanel(this,chambrePane);
+		VillePanel villepanel = new VillePanel(this,hotelpan);
 		
-		fenetre3.add(chambrePane);
-		fenetre3.setVisible(true);
-		fenetre2.add(hotelpan);
-		fenetre2.setVisible(true);
-		fenetre.add(new VillePanel(this,hotelpan));
-		fenetre.setVisible(true);
-		//fenetre.setPreferredSize(new Dimension(this.getWidth()/3, this.getHeight()));
-		this.add(fenetre);		
-		this.add(fenetre2);	
-		this.add(fenetre3);
+		villepanel.setPreferredSize(new Dimension(this.getWidth()/3,this.getHeight()));
+		hotelpan.setPreferredSize(new Dimension(this.getWidth()/3,this.getHeight()));
+		chambrePane.setPreferredSize(new Dimension(this.getWidth()/3,this.getHeight()));
+		
+		this.add(villepanel,BorderLayout.WEST );
+		this.add(hotelpan);
+		this.add(chambrePane,BorderLayout.EAST);		
+		
+		this.validate();
 	}
 	
 	public void retour(){

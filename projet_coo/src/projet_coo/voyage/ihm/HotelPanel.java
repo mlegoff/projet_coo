@@ -37,7 +37,6 @@ public class HotelPanel  extends JPanel implements ActionListener,ListSelectionL
 		private Dimension butdim  = new Dimension(100,20); 
 		private JButton ajouter = new JButton("Ajouter");
 		private JButton supprimer = new JButton("supprimer");
-		private JButton retour = new JButton("Retour");
 		private JTextField addHotelNomField;
 		private int ville = -1;
 		private ChambrePanel chambrePane;
@@ -85,13 +84,13 @@ public class HotelPanel  extends JPanel implements ActionListener,ListSelectionL
 			
 			//ajout des listener au bouton
 			ajouter.addActionListener(this);
-			retour.addActionListener(this);
 			supprimer.addActionListener(this);
 			
 			boutonpanel2.add(ajouter);
 			boutonpanel2.add(supprimer);
-			boutonpanel2.add(retour);
 			
+			
+			panelScrol.setPreferredSize(new Dimension(this.getWidth(),400));
 			this.add(panelScrol);	
 			this.add(boutonpanel);
 			this.add(boutonpanel2);
@@ -134,11 +133,7 @@ public class HotelPanel  extends JPanel implements ActionListener,ListSelectionL
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Object source =  e.getSource();
-			if(source == retour){			
-				JPrinc.init2();
-				System.out.println("retour");
-			}
-			else if(source == ajouter){
+			if(source == ajouter){
 				ajouter();
 			}else if (source == supprimer){
 				if(lesHotels.getSelectionModel().isSelectionEmpty()){
