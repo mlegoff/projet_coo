@@ -154,6 +154,7 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 		fenetre2.setVisible(true);
 		fenetre.add(new VillePanel(this,hotelpan));
 		fenetre.setVisible(true);
+		//fenetre.setPreferredSize(new Dimension(this.getWidth()/3, this.getHeight()));
 		this.add(fenetre);		
 		this.add(fenetre2);	
 		this.add(fenetre3);
