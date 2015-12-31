@@ -48,7 +48,7 @@ DefaultListModel<Vol> listModel;
 JList<Vol> list;
 DetailVolPanel detailPanel;
 Font lato = new Font("Lato",Font.CENTER_BASELINE,14);
-
+JButton retour;
 
 	public VolPanel(Dimension d, DetailVolPanel detailPanel){
 		super();
@@ -69,8 +69,8 @@ Font lato = new Font("Lato",Font.CENTER_BASELINE,14);
 		searchLabel = new JLabel("Rechercher un vol : ");
 		listVolInit();
 		searchPanel.setPreferredSize(new Dimension(d.width,50));
-		searchPanel.setBorder(new EmptyBorder(15,10,15,10));
-		searchPanel.add(searchField,BorderLayout.WEST);
+		searchPanel.setBorder(new EmptyBorder(10,0,10,0));
+		searchPanel.add(searchField,BorderLayout.CENTER);
 		searchPanel.add(searchButton,BorderLayout.EAST);
 		this.add(searchPanel);
 		scrollPane = new JScrollPane(list);
@@ -84,6 +84,10 @@ Font lato = new Font("Lato",Font.CENTER_BASELINE,14);
 		ajoutInit();
 
 		
+	}
+	public void setRetourButton(JButton retour){
+		this.retour = retour;
+		searchPanel.add(retour,BorderLayout.WEST);
 	}
 	public void searchAction(){
 		
@@ -138,7 +142,7 @@ Font lato = new Font("Lato",Font.CENTER_BASELINE,14);
 	}
 	public void ajoutInit(){
 		
-		ajouter = new JButton("Ajouter");
+		ajouter = new JButton("Ajouter un Vol");
 		ajouter.setBackground(Color.WHITE);
 		ajouter.setForeground(bleuStyle);
 		departLabel = new JLabel("Ville de départ : ");
@@ -221,11 +225,6 @@ Font lato = new Font("Lato",Font.CENTER_BASELINE,14);
 		annulation.add(annuLabel, BorderLayout.WEST);
 		annulation.add(annulationT, BorderLayout.EAST);
 		annulation.setBackground(bleuStyle);
-		ajoutVol = new JLabel(" Ajout d'un nouveau vol ");
-		ajoutVol.setPreferredSize(new Dimension(d.width,40));
-		ajoutVol.setBackground(Color.WHITE);
-		ajoutVol.setForeground(Color.white);
-		ajoutVol.setFont(lato);
 		this.formulaireAjout = new JPanel();
 		this.formulaireAjout.setPreferredSize(new Dimension(d.width, 415));
 		this.formulaireAjout.add(depart);
