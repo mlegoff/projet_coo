@@ -131,9 +131,7 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 	public void hotel(){
 		removeButtons();
 		this.repaint();
-		//JInternalFrame fenetre = new JInternalFrame();	
-		//JInternalFrame fenetre2 = new JInternalFrame();	
-		//JInternalFrame fenetre3 = new JInternalFrame();	
+		
 		this.setBorder(new EmptyBorder(0,0,0,0));
 		this.setLayout(new BorderLayout());
 		
@@ -145,6 +143,7 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 		hotelpan.setPreferredSize(new Dimension(this.getWidth()/3,this.getHeight()));
 		chambrePane.setPreferredSize(new Dimension(this.getWidth()/3,this.getHeight()));
 		
+		this.add(retourButton,BorderLayout.NORTH);
 		this.add(villepanel,BorderLayout.WEST );
 		this.add(hotelpan);
 		this.add(chambrePane,BorderLayout.EAST);		
