@@ -69,7 +69,7 @@ public class FabriqueVol {
 
 	public void deleteVol(int id){
 		try {
-			PreparedStatement stmt = conn.prepareStatement("DELETE from vol WHERE id = ?");
+			PreparedStatement stmt = conn.prepareStatement("DELETE from vol WHERE idvol = ?");
 			stmt.clearParameters();
 			stmt.setInt(1, id);			
 			stmt.execute();			
@@ -150,5 +150,61 @@ public class FabriqueVol {
 		}
 		return listVol;
 
+	}
+	
+	public Vol getVolById(int id){
+		Vol v = null;
+		try {
+			PreparedStatement stmt = conn.prepareStatement("SELECT idvol,idvilledepart,idvillearrivee,date,duree,heure,nbjoursannulation,nbpassager1ere,nbpassager2eme FROM vol WHERE idvol = ?");
+			stmt.clearParameters();	
+			stmt.setInt(1, id);
+			ResultSet resultat = stmt.executeQuery();	
+			if(resultat.next()){
+			java.sql.Date dte = resultat.getDate("date");
+			Date dateTmp = new Date(dte.getTime());
+			v = new Vol(resultat.getInt("idvol"),resultat.getInt("idvilledepart"),resultat.getInt("idvillearrivee"),dateTmp,resultat.getInt("duree"),
+					resultat.getString("heure"),resultat.getInt("nbJoursAnnulation"),resultat.getInt("nbPassager1ere"),resultat.getInt("nbPassager2eme"));
+			}
+	} catch (SQLException e) {
+		e.printStackTrace();
+		
+	}
+	return v;
+	}
+	
+	public List<Vol> searchVol(String chaine){
+		List<Vol> listVol = new ArrayList<Vol>();
+		try {
+		PreparedStatement stmt = conn.prepareStatement("SELECT idvol,idvilledepart,idvillearrivee,date,duree,heure,nbjoursannulation,nbpassager1ere,nbpassager2eme FROM vol JOIN ville on idvillearrivee = idville WHERE (nom like ?) ");
+			stmt.clearParameters();
+			stmt.setString(1, "%"+chaine+"%");
+			ResultSet resultat = stmt.executeQuery();
+			while(resultat.next()){
+				java.sql.Date dte = resultat.getDate("date");
+				Date dateTmp = new Date(dte.getTime());
+				Vol tmp = new Vol(resultat.getInt("idvol"),resultat.getInt("idvilledepart"),resultat.getInt("idvillearrivee"),dateTmp,resultat.getInt("duree"),
+						resultat.getString("heure"),resultat.getInt("nbJoursAnnulation"),resultat.getInt("nbPassager1ere"),resultat.getInt("nbPassager2eme"));
+				listVol.add(tmp);
+				
+			}
+			PreparedStatement stmt2 = conn.prepareStatement("SELECT idvol,idvilledepart,idvillearrivee,date,duree,heure,nbjoursannulation,nbpassager1ere,nbpassager2eme from vol join ville on idvilledepart = idville WHERE (nom like ?)");
+			stmt2.clearParameters();
+			stmt2.setString(1,  "%"+chaine+"%");
+			ResultSet resultat2 = stmt2.executeQuery();
+			while(resultat2.next()){
+				java.sql.Date dte = resultat2.getDate("date");
+				Date dateTmp = new Date(dte.getTime());
+				Vol tmp = new Vol(resultat2.getInt("idvol"),resultat2.getInt("idvilledepart"),resultat2.getInt("idvillearrivee"),dateTmp,resultat2.getInt("duree"),
+						resultat2.getString("heure"),resultat2.getInt("nbJoursAnnulation"),resultat2.getInt("nbPassager1ere"),resultat2.getInt("nbPassager2eme"));
+				listVol.add(tmp);
+			}
+				
+			
+		} catch (SQLException e) {
+			
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}			
+		return listVol;
 	}
 }

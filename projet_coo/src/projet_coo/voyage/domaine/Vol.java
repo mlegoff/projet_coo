@@ -1,6 +1,10 @@
 package projet_coo.voyage.domaine;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import projet_coo.voyage.fabrique.FabriqueVille;
 
 public class Vol {
 	
@@ -56,7 +60,11 @@ public class Vol {
 	}
 	
 	public String toString(){
-		return this.idVilleDepart+"-"+this.idVilleArrivee+" à "+this.heure;
+		@SuppressWarnings("deprecation")
+		String d = new SimpleDateFormat("dd/MM/YYYY").format(date);
+		String nomDep = FabriqueVille.getInstance().getVilleById(idVilleDepart).getNomVille();
+		String nomArr = FabriqueVille.getInstance().getVilleById(idVilleArrivee).getNomVille();
+		return nomDep+"-"+nomArr+" "+d+" "+this.heure;
 	}
 
 }

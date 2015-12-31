@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,7 +19,6 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
-import projet_coo.voyage.domaine.Ville;
 
 public class PrincipalPanel  extends JPanel implements ActionListener{
 	
@@ -29,10 +27,9 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 	 */
 	private static final long serialVersionUID = 1L;
 	private JLabel reservation,vol,ville,hotel;
-	private JButton reservationButton,volButton,clientButton,hotelButton;
+	private JButton reservationButton,volButton,clientButton,hotelButton, retourButton;
 	private LayoutManager layout;
-	private GestionPanel gpanel;
-	
+	private Color bleuStyle = new Color(7, 174,240);
 	public PrincipalPanel(){
 		super();
 		initialise();	
@@ -59,7 +56,12 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 		hotelButton.setBackground(Color.WHITE);
 		hotelButton.setPreferredSize(new Dimension(250, 250));
 		hotelButton.setBorder(new EmptyBorder(0,0,0,0));	
-		
+		ImageIcon retourIcon = createImageIcon("/retour.png","retourIcon");
+		retourButton = new JButton(retourIcon);
+		retourButton.setBackground(bleuStyle);
+		retourButton.setPreferredSize(new Dimension(40, 40));
+		retourButton.setBorder(new EmptyBorder(0,0,0,0));	
+		retourButton.addActionListener(this);
 		this.add(volButton);
 		this.add(reservationButton);
 		this.add(hotelButton);
@@ -118,21 +120,17 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 	
 	public void vol(){
 		removeButtons();
+//		this.setBackground(bleuStyle);
 		this.repaint();	
 		this.setBorder(new EmptyBorder(0,0,0,0));
 		this.setLayout(new BorderLayout());
-		this.gpanel = new VolPanel(new Dimension(this.getWidth()/2,this.getHeight()));
-		//gpanel.setPreferredSize(new Dimension(this.getWidth()/2,this.getHeight()));
+		DetailVolPanel panelDroite = new DetailVolPanel(new Dimension(this.getWidth()/2,this.getHeight()));
+		VolPanel gpanel = new VolPanel(new Dimension(this.getWidth()/2,this.getHeight()),panelDroite);
+		panelDroite.setVolPanel(gpanel);
+		gpanel.setRetourButton(retourButton);
 		gpanel.setBackground(Color.WHITE);
-//		JInternalFrame fenetre = new JInternalFrame();
-//		fenetre.add(gpanel);
-//		fenetre.setVisible(true);
 		this.add(gpanel, BorderLayout.WEST);
-
-		JPanel panelTmpn = new JPanel();
-		panelTmpn.setPreferredSize(new Dimension(this.getWidth()/2,this.getHeight()));
-		panelTmpn.setBackground(Color.WHITE);
-		this.add(panelTmpn, BorderLayout.EAST);
+		this.add(panelDroite, BorderLayout.EAST);
 		this.validate();
 		
 		
@@ -159,6 +157,16 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 		this.add(fenetre2);	
 		this.add(fenetre3);
 	}
+	
+	public void retour(){
+		this.removeAll();
+		this.repaint();
+		this.setLayout(new FlowLayout());
+		initialise();
+		this.validate();
+		
+		
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
@@ -173,6 +181,9 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 		}
 		if(source == hotelButton){
 			hotel();
+		}
+		if(source == retourButton){
+			retour();
 		}
 		
 	}

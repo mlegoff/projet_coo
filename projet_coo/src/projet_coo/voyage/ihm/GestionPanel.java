@@ -18,8 +18,7 @@ public abstract class GestionPanel extends JPanel implements ListSelectionListen
 	JPanel panelGauche;
 	JPanel panelDroite;
 	JTextField searchField;
-	DefaultListModel listModel;
-	JList list;
+
 	JButton searchButton;
 	
 	
