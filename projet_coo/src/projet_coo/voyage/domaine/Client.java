@@ -1,20 +1,22 @@
 package projet_coo.voyage.domaine;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Client {
 	
 	private String nom;
 	private String prenom;
-	private String ville;
-	private int reduction;
-	private int date;
+	private int ville;
+	private Date date;
 	private int id;
 	
-	public Client(int id,String nom,String prenom, String ville,int reduction,int date){
+	public Client(int id,String nom,String prenom, int ville,Date date){
 		this.nom = nom;
 		this.prenom = prenom;
 		this.ville = ville;
-		this.reduction = reduction;
 		this.date = date;
+		this.id = id;
 		
 	}
 
@@ -26,18 +28,24 @@ public class Client {
 		return prenom;
 	}
 
-	public String getVille() {
+	public int getVille() {
 		return ville;
 	}
 
-	public int getReduction() {
-		return reduction;
-	}
 
-	public int getDate() {
+	public Date getDate() {
 		return date;
 	}
+	public String getDateString(){
+		String d = new SimpleDateFormat("dd/MM/YYYY").format(date);
+		return d;
+	}
+	public int getId(){
+		return this.id;
+	}
 	
-	
+	public String toString(){
+		return this.nom+" "+this.prenom;
+	}
 
 }

@@ -116,6 +116,17 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 	public void client(){
 		removeButtons();
 		this.repaint();
+		this.setBorder(new EmptyBorder(0,0,0,0));
+		this.setLayout(new BorderLayout());
+		DetailClientPanel panelDroite = new DetailClientPanel(new Dimension(this.getWidth()/2,this.getHeight()));
+		ClientPanel gpanel = new ClientPanel(new Dimension(this.getWidth()/2,this.getHeight()),panelDroite);
+		panelDroite.setClientPanel(gpanel);
+		gpanel.setRetourButton(retourButton);
+		gpanel.setBackground(Color.WHITE);
+		this.add(gpanel, BorderLayout.WEST);
+		this.add(panelDroite, BorderLayout.EAST);
+		this.validate();
+		
 	}
 	
 	public void vol(){
