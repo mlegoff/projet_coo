@@ -36,8 +36,7 @@ public class ChambrePanel extends JPanel implements ActionListener,ListSelection
 		private JLabel categorieLabel,tarifLabel,capaciteLabel,nbChambreLabel ;
 		private Dimension butdim  = new Dimension(100,20); 
 		private JButton ajouter = new JButton("Ajouter");
-		private JButton supprimer = new JButton("supprimer");
-		private JButton retour = new JButton("Retour");
+		private JButton supprimer = new JButton("supprimer");		
 		private JTextField addChambreCatField,addChambreTarifField,addChambreCapField,addChambrenbField;
 		private int hotel;
 		
@@ -108,14 +107,14 @@ public class ChambrePanel extends JPanel implements ActionListener,ListSelection
 			boutonpanel.add(addChambrenbField);
 			
 			//ajout des listener au bouton
-			ajouter.addActionListener(this);
-			retour.addActionListener(this);
+			ajouter.addActionListener(this);			
 			supprimer.addActionListener(this);
 			
 			boutonpanel2.add(ajouter);
 			boutonpanel2.add(supprimer);
-			boutonpanel2.add(retour);
 			
+			
+			panelScrol.setPreferredSize(new Dimension(this.getWidth(),400));
 			this.add(panelScrol);	
 			this.add(boutonpanel);
 			this.add(boutonpanel2);
@@ -162,12 +161,8 @@ public class ChambrePanel extends JPanel implements ActionListener,ListSelection
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Object source =  e.getSource();
-			if(source == retour){			
-				JPrinc.init2();
-				System.out.println("retour");
-			}
-			else if(source == ajouter){
+			Object source =  e.getSource();			
+			if(source == ajouter){
 				ajouter();
 			}else if (source == supprimer){
 				if(lesChambres.getSelectionModel().isSelectionEmpty()){
