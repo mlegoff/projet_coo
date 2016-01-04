@@ -58,17 +58,17 @@ public class FabriqueHotel {
 		return newHotel;
 	}
 
-	public List<Hotel> hotelParId(int id){
-		List<Hotel> listHotel = new ArrayList<Hotel>();
+	public Hotel hotelParId(int id){
+		Hotel h = null;
 		try {
 			PreparedStatement stmt = conn.prepareStatement("SELECT idhotel,nom,idville FROM hotel where idhotel = ?");
 			stmt.clearParameters();
 			stmt.setInt(1, id);			
 			ResultSet resultat = stmt.executeQuery();	
-			while(resultat.next()){
+			if(resultat.next()){
 				
-				Hotel tmp = new Hotel(resultat.getString("nom"),resultat.getInt("idhotel"),resultat.getInt("idville"));
-				listHotel.add(tmp);
+				h = new Hotel(resultat.getString("nom"),resultat.getInt("idhotel"),resultat.getInt("idville"));
+				
 				
 			}	
 			
@@ -77,7 +77,7 @@ public class FabriqueHotel {
 			e.printStackTrace();
 			
 		}
-		return listHotel;
+		return h;
 	}
 	
 	

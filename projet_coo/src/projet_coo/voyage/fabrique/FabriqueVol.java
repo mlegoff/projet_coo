@@ -207,4 +207,29 @@ public class FabriqueVol {
 		}			
 		return listVol;
 	}
+	
+	public List<Vol> getVolsVilles(int idVilleDep, int idVilleArr){
+		List<Vol> listVol = new ArrayList<Vol>();
+		try {
+			PreparedStatement stmt = conn.prepareStatement("SELECT idvol,idvilledepart,idvillearrivee,date,duree,heure,nbjoursannulation,nbpassager1ere,nbpassager2eme FROM vol where idvilledepart = ? and idvillearrivee = ?");
+			stmt.clearParameters();
+			stmt.setInt(1, idVilleDep);			
+			stmt.setInt(2, idVilleArr);		
+			ResultSet resultat = stmt.executeQuery();	
+			while(resultat.next()){
+				java.sql.Date dte = resultat.getDate("date");
+				Date dateTmp = new Date(dte.getTime());
+				Vol tmp = new Vol(resultat.getInt("idvol"),resultat.getInt("idvilledepart"),resultat.getInt("idvillearrivee"),dateTmp,resultat.getInt("duree"),
+						resultat.getString("heure"),resultat.getInt("nbJoursAnnulation"),resultat.getInt("nbPassager1ere"),resultat.getInt("nbPassager2eme"));
+				listVol.add(tmp);
+				
+			}	
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		}
+		return listVol;
+	}
 }

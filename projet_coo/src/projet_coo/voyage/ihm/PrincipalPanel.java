@@ -4,12 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
@@ -26,10 +28,12 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JLabel reservation,vol,ville,hotel;
+	private JLabel reservation,vol,client,hotel;
 	private JButton reservationButton,volButton,clientButton,hotelButton, retourButton;
 	private LayoutManager layout;
 	private Color bleuStyle = new Color(7, 174,240);
+	private JPanel buttonPanel, labelPanel;
+	Font lato = new Font("Lato",Font.CENTER_BASELINE,14);
 	public PrincipalPanel(){
 		super();
 		initialise();	
@@ -62,16 +66,60 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 		retourButton.setPreferredSize(new Dimension(40, 40));
 		retourButton.setBorder(new EmptyBorder(0,0,0,0));	
 		retourButton.addActionListener(this);
-		this.add(volButton);
-		this.add(reservationButton);
-		this.add(hotelButton);
-		this.add(clientButton);
-		
+		buttonPanel = new JPanel();
+		buttonPanel.setPreferredSize(new Dimension(this.getWidth(), 250));
+		buttonPanel.setBackground(Color.WHITE);
+		buttonPanel.add(volButton);
+		buttonPanel.add(reservationButton);
+		buttonPanel.add(hotelButton);
+		buttonPanel.add(clientButton);
 		volButton.addActionListener(this);
 		reservationButton.addActionListener(this);
 		clientButton.addActionListener(this);
 		hotelButton.addActionListener(this);
-		
+		this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+		this.add(buttonPanel);
+		this.reservation = new JLabel("Réservation");
+		this.reservation.setForeground(bleuStyle);
+		this.reservation.setFont(lato);
+		this.hotel = new JLabel("Clients");
+		this.hotel.setForeground(bleuStyle);
+		this.hotel.setFont(lato);
+		this.vol = new JLabel("Vols");
+		this.vol.setForeground(bleuStyle);
+		this.vol.setFont(lato);
+		this.client =  new JLabel("Hotels");
+		this.client.setForeground(bleuStyle);
+		this.client.setFont(lato);
+		labelPanel = new JPanel();
+		JPanel hotelPanel = new JPanel();
+		JPanel clientPanel = new JPanel();
+		JPanel volPanel = new JPanel();
+		JPanel resaPanel = new JPanel();
+		volPanel.add(vol);
+		volPanel.setPreferredSize(new Dimension(200,100));
+		volPanel.setBorder(new EmptyBorder(0,0,0,0));
+		clientPanel.add(client);
+		clientPanel.setPreferredSize(new Dimension(200,80));
+		clientPanel.setBorder(new EmptyBorder(0,0,0,0));
+		resaPanel.add(reservation);
+		resaPanel.setPreferredSize(new Dimension(200,80));
+		resaPanel.setBorder(new EmptyBorder(0,0,0,0));
+		hotelPanel.add(hotel);
+		hotelPanel.setPreferredSize(new Dimension(200,80));
+		hotelPanel.setBorder(new EmptyBorder(0,0,0,0));
+		volPanel.setBackground(Color.WHITE);
+		clientPanel.setBackground(Color.WHITE);
+		resaPanel.setBackground(Color.WHITE);
+		hotelPanel.setBackground(Color.WHITE);
+		labelPanel.setLayout(new BoxLayout(labelPanel, BoxLayout.X_AXIS));
+		labelPanel.add(volPanel);
+		labelPanel.add(resaPanel);
+		labelPanel.add(clientPanel);
+		labelPanel.add(hotelPanel);
+		labelPanel.setBorder(new EmptyBorder(0,85,0,125));
+		labelPanel.setBackground(Color.WHITE);
+		this.add(labelPanel);
 		
 	}
 	private  ImageIcon createImageIcon(String path, String description) {
@@ -87,22 +135,34 @@ public class PrincipalPanel  extends JPanel implements ActionListener{
 	public void initialise(){		
 		this.setBackground(Color.WHITE);
 		Border border = this.getBorder();
-		Border margin = new EmptyBorder(200,10,10,10);
+		Border margin = new EmptyBorder(175,10,10,10);
 		this.setBorder(new CompoundBorder(border, margin));
 		createButtons();		
 	}
 	
 		
 	public void removeButtons(){
+		this.remove(buttonPanel);
 		this.remove(clientButton);
 		this.remove(volButton);
 		this.remove(reservationButton);
 		this.remove(hotelButton);
+		this.remove(labelPanel);
 	}
 	
 	public void reservation(){
 		removeButtons();
 		this.repaint();
+		this.setBorder(new EmptyBorder(0,0,0,0));
+		this.setLayout(new BorderLayout());
+		DetailResaPanel panelDroite = new DetailResaPanel(new Dimension(this.getWidth()/2,this.getHeight()));
+		ResaPanel gpanel = new ResaPanel(new Dimension(this.getWidth()/2,this.getHeight()),panelDroite);
+		gpanel.setRetourButton(retourButton);
+		gpanel.setBackground(bleuStyle);
+		this.add(gpanel, BorderLayout.WEST);
+		this.add(panelDroite, BorderLayout.EAST);
+		this.setBackground(bleuStyle);
+		this.validate();
 	}
 	
 	public void client(){

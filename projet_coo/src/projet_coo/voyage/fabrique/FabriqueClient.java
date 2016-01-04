@@ -67,7 +67,11 @@ public void deleteClient(int id){
 		PreparedStatement stmt = conn.prepareStatement("DELETE from client WHERE idclient = ?");
 		stmt.clearParameters();
 		stmt.setInt(1, id);			
-		stmt.execute();			
+		stmt.execute();		
+		PreparedStatement stmt2 = conn.prepareStatement("DELETE from reservation WHERE idclient = ?");
+		stmt2.clearParameters();
+		stmt2.setInt(1, id);			
+		stmt2.execute();	
 
 	} catch (SQLException e) {
 		e.printStackTrace();

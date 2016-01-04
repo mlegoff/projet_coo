@@ -35,6 +35,10 @@ import projet_coo.voyage.fabrique.FabriqueVol;
 
 public class VolPanel extends GestionPanel{
 	
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 JLabel searchLabel,ajoutVol;
 JScrollPane scrollPane;
 JButton ajouter;
@@ -42,13 +46,13 @@ JPanel depart,arrive,date,duree,nbpassger2,nbpassager1, annulation,heure;
 JTextField departT,arriveT,dateT,dureeT,nbpassger2T,nbpassager1T, annulationT,heureT;
 JLabel departLabel,arriveLabel,dateLabel,dureeLabel,nb2Label,nb1Label,annuLabel,heureLabel;
 private JPanel formulaireAjout,searchPanel;
-Dimension d;
-Color bleuStyle;
-DefaultListModel<Vol> listModel;
-JList<Vol> list;
-DetailVolPanel detailPanel;
-Font lato = new Font("Lato",Font.CENTER_BASELINE,14);
-JButton retour;
+private Dimension d;
+private Color bleuStyle;
+private DefaultListModel<Vol> listModel;
+private JList<Vol> list;
+private DetailVolPanel detailPanel;
+private Font lato = new Font("Lato",Font.CENTER_BASELINE,14);
+private JButton retour;
 
 	public VolPanel(Dimension d, DetailVolPanel detailPanel){
 		super();
@@ -247,15 +251,25 @@ JButton retour;
 		formulaireAjout.validate();
 		this.add(formulaireAjout);
 	}
+	
+	public void resetTextFields(){
+		this.annulationT.setText(null);
+		this.arriveT.setText(null);
+		this.departT.setText(null);
+		this.dateT.setText(null);
+		this.dureeT.setText(null);
+		this.nbpassager1T.setText(null);
+		this.nbpassger2T.setText(null);
+		this.heureT.setText(null);
+		
+	}
 	public void ajouterAction(){
 		int dureeInt = -1;
 		int nbJoursAnnulationInt = -1;
 		int nbPassager1ereInt = -1;
 		int nbPassager2emeInt = -1;
-		java.util.Date heureInt = null;
 		java.util.Date dateParse = null;
 		java.util.Date dateParse2 = null;
-
 		try{
 		dureeInt = Integer.parseInt(dureeT.getText());
 		}
@@ -294,7 +308,9 @@ JButton retour;
 		}
 		DateFormat df2 = new SimpleDateFormat("HH:mm");
 		try{
+
 			dateParse2 = df2.parse(heureT.getText());
+			
 		}
 		catch(ParseException pe){
 			JOptionPane.showMessageDialog(null, "Heure invalide");
@@ -311,13 +327,29 @@ JButton retour;
 			JOptionPane.showMessageDialog(null, "Duree invalide");
 		}
 		else{
+			String heureString = heureT.getText();
+			String[] checkHeure = heureString.split(":");
+			if(checkHeure.length == 0 || Integer.parseInt(checkHeure[0])>24 || Integer.parseInt(checkHeure[1])>60){
+				JOptionPane.showMessageDialog(null, "Heure invalide");
+				
+			}
+		else{
+			if(this.arriveT.getText().equals(this.departT.getText())){
+				JOptionPane.showMessageDialog(null, "Les villes de départ et d'arrivée doivent être différentes");
+			}
+			
+			else{
 			int idDepart = FabriqueVille.getInstance().getVilleByName(departT.getText()).getid();
 			int idArrive = FabriqueVille.getInstance().getVilleByName(arriveT.getText()).getid();
 			Vol vol = FabriqueVol.getInstance().createNewVol(idDepart, idArrive, dateParse, dureeInt,heureT.getText(), nbJoursAnnulationInt, nbPassager1ereInt, nbPassager2emeInt);
 			this.listModel.addElement(vol);
+			resetTextFields();
+			this.validate();
+			}
 		}
+		}}
 		}
-		}
+		
 	}
 
 }

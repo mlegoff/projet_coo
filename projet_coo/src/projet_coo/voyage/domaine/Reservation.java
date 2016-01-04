@@ -5,8 +5,6 @@ public class Reservation {
 	private int idClient;
 	private int villeDepart;
 	private int villeArrive;
-	private int dateAller;
-	private int dateRetour;
 	private int nbVoyageurs;
 	private int idchambre;
 	private int id;
@@ -14,14 +12,12 @@ public class Reservation {
 	private int idVolRetour;
 		
 	public Reservation(int idClient, int villeDepart, int villeArrive,
-			int dateAller, int dateRetour, int nbVoyageurs,
+			int nbVoyageurs,
 			int idchambre, int id,int idVolDepart,int idVolRetour) {
 		super();
 		this.idClient = idClient;
 		this.villeDepart = villeDepart;
 		this.villeArrive = villeArrive;
-		this.dateAller = dateAller;
-		this.dateRetour = dateRetour;
 		this.nbVoyageurs = nbVoyageurs;
 		this.idchambre = idchambre;
 		this.id = id;
@@ -47,12 +43,7 @@ public class Reservation {
 	public int getVilleArrive() {
 		return villeArrive;
 	}
-	public int getDateAller() {
-		return dateAller;
-	}
-	public int getDateRetour() {
-		return dateRetour;
-	}
+
 	public int getNbVoyageurs() {
 		return nbVoyageurs;
 	}

@@ -110,7 +110,27 @@ public class FabriqueChambre {
 		}
 		return listChambre;
 	}
-	
+	public Chambre getChambreParId(int id){
+		Chambre c = null;
+		try {
+			PreparedStatement stmt = conn.prepareStatement("SELECT idchambre,categorie,tarif,capacite,nbchambre,idhotel FROM chambre where idchambre = ?");
+			stmt.clearParameters();
+			stmt.setInt(1, id);			
+			ResultSet resultat = stmt.executeQuery();	
+			if(resultat.next()){
+				
+				c = new Chambre(resultat.getInt("nbchambre"),resultat.getInt("capacite"),resultat.getInt("tarif"),resultat.getString("categorie"),resultat.getInt("idhotel"),resultat.getInt("idchambre"));
+				
+				
+			}	
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		}
+		return c;
+	}
 	public void putindegitdemerde(){
 		String st = "NIKE TA MERE";
 	}

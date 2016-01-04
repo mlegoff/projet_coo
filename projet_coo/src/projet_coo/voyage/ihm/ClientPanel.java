@@ -233,8 +233,18 @@ JButton retour;
 			if(!nomT.getText().equals("") && !(nomT.getText() == null) && !prenomT.getText().equals("") && !(prenomT.getText() == null) )
 			c = FabriqueClient.getInstance().createNewClient(nomT.getText(), prenomT.getText(), FabriqueVille.getInstance().getVilleByName(villeT.getText()).getid(), dateParse) ;
 			this.listModel.addElement(c);
+			resetTextFields();
+			this.validate();
 			
 		}
 		
 		}
+	
+	public void resetTextFields(){
+		this.dateT.setText(null);
+		this.nomT.setText(null);
+		this.prenomT.setText(null);
+		this.villeT.setText(null);
+		
+	}
 }
