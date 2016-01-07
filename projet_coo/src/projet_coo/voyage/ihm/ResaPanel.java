@@ -32,6 +32,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import projet_coo.voyage.domaine.Chambre;
+import projet_coo.voyage.domaine.Hotel;
 import projet_coo.voyage.domaine.Reservation;
 import projet_coo.voyage.domaine.Vol;
 import projet_coo.voyage.fabrique.FabriqueReservation;
@@ -46,9 +48,9 @@ public class ResaPanel extends GestionPanel{
 JLabel searchLabel,ajoutResa;
 JScrollPane scrollPane;
 JButton ajouter;
-JPanel depart,arrive,volDepart,volArrive,voyageur,chambre,hotel,client;
-JTextField departT,arriveT,dateT,dureeT,nbpassger2T,nbpassager1T, annulationT,heureT;
-JLabel departLabel,arriveLabel,dateLabel,dureeLabel,nb2Label,nb1Label,annuLabel,heureLabel;
+JPanel depart,arrive,voyageur;
+JTextField departT,arriveT,voyageurT;
+JLabel departLabel,arriveLabel,voyageurLabel;
 private JPanel formulaireAjout,searchPanel;
 Dimension d;
 Color bleuStyle;
@@ -58,7 +60,9 @@ DetailResaPanel detailPanel;
 Font lato = new Font("Lato",Font.CENTER_BASELINE,14);
 JButton retour;
 VolPopUp pop;
+HotelPopUp pop2;
 JPanel ajouterPanel;
+int nbV;
 	public ResaPanel(Dimension d, DetailResaPanel detailPanel){
 		super();
 		this.detailPanel = detailPanel;
@@ -145,7 +149,38 @@ JPanel ajouterPanel;
 			searchAction();
 		}
 		if(source == ajouter){
+			nbV = -1;
 			try {
+				if(this.departT.getText() == null || this.departT.getText().equals("")){
+					JOptionPane.showMessageDialog(null, "Saisir la ville de départ");
+				}
+				if(!FabriqueVille.getInstance().villeExists(departT.getText())){
+					JOptionPane.showMessageDialog(null, "La ville de départ n'existe pas");
+				}
+				if(this.arriveT.getText() == null || this.arriveT.getText().equals("")){
+					JOptionPane.showMessageDialog(null, "Saisir la ville d'arrivé ");
+				}
+				if(!FabriqueVille.getInstance().villeExists(arriveT.getText())){
+					JOptionPane.showMessageDialog(null, "La ville d'arrivé n'existe pas");
+				}
+				if(this.voyageurT.getText() == null || this.voyageurT.getText().equals("")){
+					JOptionPane.showMessageDialog(null, "Saisir un nombre de voyageur");
+				}
+				else{
+				try{
+					nbV = Integer.parseInt(this.voyageurT.getText());
+					if(nbV<1){
+						JOptionPane.showMessageDialog(null, "Nombre de voyageur invalide");
+					}
+					else{
+						ajouterAction();
+					}
+				}
+				catch(NumberFormatException nfe){
+					JOptionPane.showMessageDialog(null, "Nombre de voyageur invalide");
+					
+				}
+				}
 				ajouterAction();
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
@@ -187,12 +222,25 @@ JPanel ajouterPanel;
 		arrive.add(arriveLabel, BorderLayout.WEST);
 		arrive.add(arriveT, BorderLayout.EAST);
 		arrive.setBackground(bleuStyle);;
-
-
+		voyageur = new JPanel();
+		voyageur.setBackground(bleuStyle);
+		voyageur.setPreferredSize(new Dimension(d.width,25));
+		voyageur.setSize(new Dimension(d.width,25));
+		voyageurLabel = new JLabel("Nombre de voyageur");
+		voyageurLabel.setForeground(Color.WHITE);
+		voyageurT = new JTextField();
+		voyageurT.setPreferredSize(new Dimension(d.width - 250,20));
+		voyageur.setBorder(new EmptyBorder(15,10,10,10));
+		voyageur.setLayout(new BorderLayout());
+		voyageur.add(voyageurLabel,BorderLayout.WEST);
+		voyageur.add(voyageurT, BorderLayout.EAST);
+		
 		this.formulaireAjout = new JPanel();
-		this.formulaireAjout.setPreferredSize(new Dimension(d.width, 100));
+		this.formulaireAjout.setPreferredSize(new Dimension(d.width, 150));
 		this.formulaireAjout.add(depart);
 		this.formulaireAjout.add(arrive);
+		this.formulaireAjout.add(voyageur);
+		
 		formulaireAjout.setLayout(new BoxLayout(formulaireAjout, BoxLayout.Y_AXIS));
 		formulaireAjout.setBackground(bleuStyle);
 		formulaireAjout.setForeground(bleuStyle);
@@ -213,17 +261,21 @@ JPanel ajouterPanel;
 		this.departT.setText(null);
 		
 	}
+	
+	@SuppressWarnings("unused")
 	public synchronized void ajouterAction() throws InterruptedException{
 		int idDep = FabriqueVille.getInstance().getVilleByName(this.departT.getText()).getid();
 		int idArr = FabriqueVille.getInstance().getVilleByName(this.arriveT.getText()).getid();
 		JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-		pop = new VolPopUp(topFrame,"Vol aller",idDep,idArr);
+		pop = new VolPopUp(topFrame,"Vol aller",idDep,idArr, nbV);
 		Vol dep = pop.getVol();
 		Vol arr = null;
+		JPanel volD = new JPanel();
+		JPanel volA = new JPanel();
 		System.out.println(dep.toString());
 		if(dep != null){
 			this.remove(ajouterPanel);
-			JPanel volD = new JPanel();
+			
 			volD.setLayout(new BorderLayout());
 			volD.setPreferredSize(new Dimension(d.width,30));
 			JLabel label1 = new JLabel("Vol aller : ");
@@ -237,11 +289,15 @@ JPanel ajouterPanel;
 			this.add(volD);
 			repaint();
 			revalidate();
-			pop = new VolPopUp(topFrame,"Vol retour",idArr,idDep);
+			if(dep.getNbPassager1ere()+dep.getNbPassager2eme() < Integer.parseInt(this.voyageurT.getText())){
+				JOptionPane.showMessageDialog(null, "Il n'y a plus assez de place sur ce vol");
+			}
+			else{
+			pop = new VolPopUp(topFrame,"Vol retour",idArr,idDep,nbV);
 			arr = pop.getVol();
 			if(arr != null){
 				System.out.println(arr.toString());
-				JPanel volA = new JPanel();
+				volA = new JPanel();
 				volA.setLayout(new BorderLayout());
 				volA.setPreferredSize(new Dimension(d.width,30));
 				JLabel label2 = new JLabel("Vol reour : ");
@@ -255,24 +311,38 @@ JPanel ajouterPanel;
 				this.add(volA);
 				this.repaint();
 				this.validate();
+				if(arr.getNbPassager1ere()+arr.getNbPassager2eme() < Integer.parseInt(this.voyageurT.getText())){
+					JOptionPane.showMessageDialog(null, "Il n'y a plus assez de place sur ce vol");
+				}
+				else{
+				pop2 = new HotelPopUp(topFrame,"Choississez un Hotel et une Chambre",idArr);
+				Hotel h = pop2.getHotel();
+				if(h != null){
+					Chambre c = pop2.getChambre();
+					JPanel chPanel = new JPanel();
+					JPanel hPanel = new JPanel();
+					JLabel chLabel = new JLabel("Chambre :");
+					JLabel hLabel = new JLabel("Hotel :");
+					JLabel chLabel2 = new JLabel(c.getCategorie()+" "+c.getCapacite());
+					JLabel hLabel2 = new JLabel(h.getNom());
+				}
 			}
+			}
+			}
+		}
 			else{
 				this.remove(formulaireAjout);
 				this.remove(volD);
+				this.remove(volA);
 				this.repaint();
 				this.revalidate();
 				this.ajoutInit();
 				this.repaint();
 				this.validate();
 			}
-		}
-//		JOptionPane selectVol = new JOptionPane();
-//		List<Vol>FabriqueVol.getInstance().getAllVol();
-//		DefaultListModel model = new DefaultListModel();
-//		JList list = new JList();
-//		JScrollPane scrollPanePop = new JScrollPane();
+		}	
 		
 		
-	}
+	
 
 }

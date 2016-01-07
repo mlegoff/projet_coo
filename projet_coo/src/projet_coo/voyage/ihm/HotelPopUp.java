@@ -23,10 +23,14 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import projet_coo.voyage.domaine.Chambre;
+import projet_coo.voyage.domaine.Hotel;
 import projet_coo.voyage.domaine.Vol;
+import projet_coo.voyage.fabrique.FabriqueChambre;
+import projet_coo.voyage.fabrique.FabriqueHotel;
 import projet_coo.voyage.fabrique.FabriqueVol;
 
-public class VolPopUp extends JDialog implements ActionListener,ListSelectionListener{
+public class HotelPopUp extends JDialog implements ActionListener,ListSelectionListener{
 
 	/**
 	 * 
@@ -35,23 +39,25 @@ public class VolPopUp extends JDialog implements ActionListener,ListSelectionLis
 	 Font lato = new Font("Lato",Font.CENTER_BASELINE,14);
 	 Color bleuStyle;
 	JScrollPane scrollPane;
+	JScrollPane scrollPane2;
 	int idVilleDep; int idVilleArr;
-	DefaultListModel<Vol> listModel;
-	JList<Vol> list;
+	DefaultListModel<Hotel> listModel;
+	DefaultListModel<Chambre> listModel2;
+	JList<Hotel> list;
+	JList<Chambre> list2;
 	JPanel panel;
 	JButton choisir,annuler;
-	Vol v;
-	int nbvoyageur;
-	public VolPopUp(JFrame parent,String title,int idVilleDep, int idVilleArr, int nbvoyageur){
+	Hotel h;
+	Chambre c;
+	public HotelPopUp(JFrame parent,String title,int idVilleArr){
 		super(parent,title,true);
-		this.nbvoyageur = nbvoyageur;
 		this.bleuStyle = new Color(7, 174,240);
 		this.setLocationRelativeTo(parent);
-		v = null;
+		h = null;
+		c = null;
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	    this.setResizable(false);
 		panel = new JPanel();
-		this.idVilleDep = idVilleDep;
 		this.idVilleArr = idVilleArr;
 		initList();
 		this.setPreferredSize(new Dimension(400,300));
@@ -82,26 +88,38 @@ public class VolPopUp extends JDialog implements ActionListener,ListSelectionLis
 		
 	}
 	public void initList(){
-		List<Vol> vols = FabriqueVol.getInstance().getVolsVilles(idVilleDep,idVilleArr);
-		listModel = new DefaultListModel<Vol>();
-		for(Vol v : vols){
-			listModel.addElement(v);
+		List<Hotel> hotels = FabriqueHotel.getInstance().hotelParVille(idVilleArr);
+		listModel = new DefaultListModel<Hotel>();
+		for(Hotel h : hotels){
+			listModel.addElement(h);
 		}
-		list = new JList<Vol>(listModel);
+		list = new JList<Hotel>(listModel);
 		list.setForeground(bleuStyle);
 		JScrollPane scrollPane = new JScrollPane(list);
 		scrollPane.setPreferredSize(new Dimension(400,200));
 		scrollPane.setBorder(BorderFactory.createLineBorder(bleuStyle));
+		scrollPane2 = new JScrollPane();
+		scrollPane2.setPreferredSize(new Dimension(400,200));
+		scrollPane2.setBorder(BorderFactory.createLineBorder(bleuStyle));
+		JPanel scrollPanel = new JPanel();
+		scrollPanel.setPreferredSize(new Dimension(800,200));
+		scrollPanel.add(scrollPane);
 		panel.add(scrollPane);
 		
 		
 	}
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		if (list.getSelectionModel().isSelectionEmpty()) {
-			 System.out.println("Rien n'est selectionne.");				 
+		if (!list.getSelectionModel().isSelectionEmpty()) {
+			Hotel h = list.getModel().getElementAt(list.getMinSelectionIndex());   
+			list2 = new JList<Chambre>();
+			listModel2 = new DefaultListModel<Chambre>();
+			List<Chambre> chambres = FabriqueChambre.getInstance().chambreParId(h.getId());
+			for(Chambre c : chambres){
+				listModel2.addElement(c);
+			}
+			scrollPane2.setViewportView(list);			 
 		}else{
-			int debutIndex = list.getSelectionModel().getMinSelectionIndex();   
 			
 		}
 		
@@ -112,16 +130,21 @@ public class VolPopUp extends JDialog implements ActionListener,ListSelectionLis
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		if(source == annuler){
-			this.v = null;
+			this.c = null;
+			this.h = null;
 		}
 		if(source == choisir){
-			this.v = this.list.getModel().getElementAt(list.getSelectedIndex());
+			this.h = this.list.getModel().getElementAt(list.getSelectedIndex());
+			this.c = this.list2.getModel().getElementAt(list2.getSelectedIndex());
 		}
 		   setVisible(false); 
 		    dispose();
 		
 	}
-	public Vol getVol(){
-	return this.v;
+	public Chambre getChambre(){
+	return this.c;
+	}
+	public Hotel getHotel(){
+	return this.h;
 	}
 }
