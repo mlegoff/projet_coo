@@ -64,7 +64,13 @@ public class Vol {
 		String d = new SimpleDateFormat("dd/MM/YYYY").format(date);
 		String nomDep = FabriqueVille.getInstance().getVilleById(idVilleDepart).getNomVille();
 		String nomArr = FabriqueVille.getInstance().getVilleById(idVilleArrivee).getNomVille();
+		return nomDep+"-"+nomArr+" "+d+" "+this.heure+" "+nbPassager1ere+" places en 1ère et "+nbPassager2eme+" en 2nd classe";
+	}
+	public String toStringResume(){
+		@SuppressWarnings("deprecation")
+		String d = new SimpleDateFormat("dd/MM/YYYY").format(date);
+		String nomDep = FabriqueVille.getInstance().getVilleById(idVilleDepart).getNomVille();
+		String nomArr = FabriqueVille.getInstance().getVilleById(idVilleArrivee).getNomVille();
 		return nomDep+"-"+nomArr+" "+d+" "+this.heure;
 	}
-
 }

@@ -36,7 +36,7 @@ public class FabriqueReservation {
 	}
 
 	public Reservation createNewReservation(int idClient, int villeDepart, int villeArrive,
-			int dateAller, int dateRetour, int nbVoyageurs,int idChambre,int idVolDepart,int idVolRetour){
+			 int nbVoyageurs,int idChambre,int idVolDepart,int idVolRetour){
 		Reservation newReservation = null;
 		try {
 			PreparedStatement stmt = conn.prepareStatement("INSERT INTO reservation (idclient,idvilledepart,idvillearrivee,nbpersonne,idvolaller,idvolretour,idchambre) VALUES(?,?,?,?,?,?,?)");

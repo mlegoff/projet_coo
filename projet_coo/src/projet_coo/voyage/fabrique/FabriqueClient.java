@@ -156,4 +156,24 @@ public Client getClientById(int id){
 	}
 	return c;
 }
+public Client getClientByNomPrenom(String nom,String prenom){
+	Client c = null;
+	try{
+		PreparedStatement stmt = conn.prepareStatement("SELECT idclient,nom,prenom,ville,datenaissance  FROM client where nom = ? and prenom = ?");
+		stmt.clearParameters();	
+		stmt.setString(1,nom);
+		stmt.setString(2,prenom);
+		ResultSet resultat = stmt.executeQuery();	
+		if(resultat.next()){
+		java.sql.Date dte = resultat.getDate("datenaissance");
+		Date dateTmp = new Date(dte.getTime());
+		c = new Client(resultat.getInt("idclient"),resultat.getString("nom"),resultat.getString("prenom"),resultat.getInt("ville"),dateTmp);
+		}
+		
+	}
+	catch(SQLException e){
+		
+	}
+	return c;
+}
 }

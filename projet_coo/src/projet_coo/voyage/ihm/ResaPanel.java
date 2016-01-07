@@ -33,9 +33,11 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import projet_coo.voyage.domaine.Chambre;
+import projet_coo.voyage.domaine.Client;
 import projet_coo.voyage.domaine.Hotel;
 import projet_coo.voyage.domaine.Reservation;
 import projet_coo.voyage.domaine.Vol;
+import projet_coo.voyage.fabrique.FabriqueClient;
 import projet_coo.voyage.fabrique.FabriqueReservation;
 import projet_coo.voyage.fabrique.FabriqueVille;
 import projet_coo.voyage.fabrique.FabriqueVol;
@@ -47,7 +49,7 @@ public class ResaPanel extends GestionPanel{
 	 */
 JLabel searchLabel,ajoutResa;
 JScrollPane scrollPane;
-JButton ajouter;
+JButton ajouter, valider;
 JPanel depart,arrive,voyageur;
 JTextField departT,arriveT,voyageurT;
 JLabel departLabel,arriveLabel,voyageurLabel;
@@ -63,9 +65,20 @@ VolPopUp pop;
 HotelPopUp pop2;
 JPanel ajouterPanel;
 int nbV;
+Vol dep,arr;
+Chambre c;
+Hotel h;
+Reservation r;
+Client client;
 	public ResaPanel(Dimension d, DetailResaPanel detailPanel){
 		super();
+		valider = new JButton("Valider");
+		valider.setBackground(Color.WHITE);
+		valider.setForeground(bleuStyle);
+		valider.addActionListener(this);
 		this.detailPanel = detailPanel;
+		valider.setPreferredSize(new Dimension(100,20));
+		valider.setSize(new Dimension(100,20));
 		this.bleuStyle = new Color(7, 174,240);
 		this.d = d;
 		this.setPreferredSize(d);
@@ -181,11 +194,15 @@ int nbV;
 					
 				}
 				}
-				ajouterAction();
+				
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+		}
+		if(source == valider){
+			r = FabriqueReservation.getInstance().createNewReservation(client.getId(), dep.getIdVilleDepart(), dep.getIdVilleArrivee(), nbV, c.getId(), dep.getId(), arr.getId());
+			this.listModel.addElement(r);
 		}
 		
 	}
@@ -268,11 +285,16 @@ int nbV;
 		int idArr = FabriqueVille.getInstance().getVilleByName(this.arriveT.getText()).getid();
 		JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 		pop = new VolPopUp(topFrame,"Vol aller",idDep,idArr, nbV);
-		Vol dep = pop.getVol();
-		Vol arr = null;
+		dep = pop.getVol();
+		int dep1ere = pop.getNb1ere();
+		int dep2eme = pop.getNb2eme();
+		arr = null;
 		JPanel volD = new JPanel();
 		JPanel volA = new JPanel();
-		System.out.println(dep.toString());
+		JPanel hPanel = null;
+		JPanel chPanel = null;
+		JPanel clientPanel = null;
+
 		if(dep != null){
 			this.remove(ajouterPanel);
 			
@@ -281,20 +303,20 @@ int nbV;
 			JLabel label1 = new JLabel("Vol aller : ");
 			label1.setForeground(Color.white);
 			volD.add(label1, BorderLayout.WEST);
-			JLabel volDepLabel = new JLabel(dep.toString());
+			JLabel volDepLabel = new JLabel(dep.toStringResume());
 			volDepLabel.setForeground(Color.WHITE);
 			volD.setBackground(bleuStyle);
 			volD.add(volDepLabel, BorderLayout.EAST);
 			volD.setBorder(new EmptyBorder(10,10,10,10));
 			this.add(volD);
+			
 			repaint();
 			revalidate();
-			if(dep.getNbPassager1ere()+dep.getNbPassager2eme() < Integer.parseInt(this.voyageurT.getText())){
-				JOptionPane.showMessageDialog(null, "Il n'y a plus assez de place sur ce vol");
-			}
-			else{
+			
 			pop = new VolPopUp(topFrame,"Vol retour",idArr,idDep,nbV);
 			arr = pop.getVol();
+			int arr1ere = pop.getNb1ere();
+			int arr2eme = pop.getNb2eme();
 			if(arr != null){
 				System.out.println(arr.toString());
 				volA = new JPanel();
@@ -303,7 +325,7 @@ int nbV;
 				JLabel label2 = new JLabel("Vol reour : ");
 				label2.setForeground(Color.WHITE);
 				volA.add(label2, BorderLayout.WEST);
-				JLabel volArrLabel = new JLabel(dep.toString());
+				JLabel volArrLabel = new JLabel(arr.toStringResume());
 				volArrLabel.setForeground(Color.WHITE);
 				volA.setBackground(bleuStyle);
 				volA.setBorder(new EmptyBorder(10,10,10,10));
@@ -311,36 +333,104 @@ int nbV;
 				this.add(volA);
 				this.repaint();
 				this.validate();
-				if(arr.getNbPassager1ere()+arr.getNbPassager2eme() < Integer.parseInt(this.voyageurT.getText())){
-					JOptionPane.showMessageDialog(null, "Il n'y a plus assez de place sur ce vol");
-				}
-				else{
-				pop2 = new HotelPopUp(topFrame,"Choississez un Hotel et une Chambre",idArr);
-				Hotel h = pop2.getHotel();
-				if(h != null){
-					Chambre c = pop2.getChambre();
-					JPanel chPanel = new JPanel();
-					JPanel hPanel = new JPanel();
+				pop2 = new HotelPopUp(topFrame,"Choississez un Hotel et une Chambre",idArr,nbV);
+				this.h = pop2.getHotel();
+				if(this.h != null){
+					this.c = pop2.getChambre();
+					chPanel = new JPanel();
+					hPanel = new JPanel();
 					JLabel chLabel = new JLabel("Chambre :");
 					JLabel hLabel = new JLabel("Hotel :");
 					JLabel chLabel2 = new JLabel(c.getCategorie()+" "+c.getCapacite());
 					JLabel hLabel2 = new JLabel(h.getNom());
-				}
+					
+					hPanel.setLayout(new BorderLayout());
+					hPanel.setPreferredSize(new Dimension(d.width,30));
+					
+					chPanel.setLayout(new BorderLayout());
+					chPanel.setPreferredSize(new Dimension(d.width,30));
+					
+					chPanel.setBackground(bleuStyle);
+					chPanel.setBorder(new EmptyBorder(10,10,10,10));
+					
+					hPanel.setBackground(bleuStyle);
+					hPanel.setBorder(new EmptyBorder(10,10,10,10));
+					
+					chLabel.setForeground(Color.WHITE);
+					chLabel2.setForeground(Color.WHITE);
+					hLabel.setForeground(Color.WHITE);
+					hLabel2.setForeground(Color.WHITE);
+					
+					chPanel.add(chLabel, BorderLayout.WEST);
+					chPanel.add(chLabel2, BorderLayout.EAST);
+					
+					hPanel.add(hLabel, BorderLayout.WEST);
+					hPanel.add(hLabel2, BorderLayout.EAST);
+					
+					this.add(hPanel);
+					this.add(chPanel);
+
+					this.repaint();
+					this.revalidate();
+					
+					String nom = JOptionPane.showInputDialog(null, "Nom du client :");
+					String prenom = JOptionPane.showInputDialog(null, "Prenom du client :");
+					client = FabriqueClient.getInstance().getClientByNomPrenom(nom, prenom);
+					while(client == null){
+						JOptionPane.showMessageDialog(null, "Client inconnu, saisir un nouveau client");
+						nom = JOptionPane.showInputDialog(null, "Nom du client :");
+						prenom = JOptionPane.showInputDialog(null, "Prenom du client :");
+						client = FabriqueClient.getInstance().getClientByNomPrenom(nom, prenom);
+					}
+					clientPanel = new JPanel();
+					JLabel client1 = new JLabel("Client :");
+					JLabel client2 = new JLabel(nom+" "+prenom);
+					clientPanel.setLayout(new BorderLayout());
+					clientPanel.setPreferredSize(new Dimension(d.width,30));
+					clientPanel.setBackground(bleuStyle);
+					clientPanel.setBorder(new EmptyBorder(10,10,10,10));
+					client1.setForeground(Color.WHITE);
+					client2.setForeground(Color.WHITE);
+					clientPanel.add(client1, BorderLayout.WEST);
+					clientPanel.add(client2, BorderLayout.EAST);
+					this.add(clientPanel);
+					JPanel ajouterB = new JPanel();
+					ajouterB.setBackground(bleuStyle);
+					ajouterB.setPreferredSize(new Dimension(d.width,30));
+					ajouterB.setLayout(new BorderLayout());
+					ajouterB.add(valider, BorderLayout.CENTER);
+					this.add(ajouterB);
+					this.repaint();
+					this.revalidate();
 			}
-			}
-			}
+			
+		}
 		}
 			else{
 				this.remove(formulaireAjout);
+				if(volD!=null){
 				this.remove(volD);
+				}
+				if(volA != null){
 				this.remove(volA);
+				}
+				if(hPanel != null){
+				this.remove(hPanel);
+				}
+				if(chPanel!=null){
+				this.remove(chPanel);
+				}
+				if(clientPanel!=null){
+				this.remove(clientPanel);
+				}
 				this.repaint();
 				this.revalidate();
 				this.ajoutInit();
 				this.repaint();
 				this.validate();
 			}
-		}	
+		}
+			
 		
 		
 	
