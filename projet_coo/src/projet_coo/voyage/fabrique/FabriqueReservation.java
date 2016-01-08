@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -67,6 +68,8 @@ public class FabriqueReservation {
 
 	public void deleteReservation(int id){
 		try {
+
+			
 			PreparedStatement stmt = conn.prepareStatement("DELETE from reservation WHERE id = ?");
 			stmt.clearParameters();
 			stmt.setInt(1, id);			
@@ -179,7 +182,7 @@ public Reservation getResaById(int id){
 		stmt.setInt(1, id);	
 		ResultSet resultat = stmt.executeQuery();
 		if(resultat.next()){
-				
+				int idvoldep = resultat.getInt("idvolaller");
 		r = new Reservation(resultat.getInt("idclient"),resultat.getInt("idvilledepart"),resultat.getInt("idvillearrivee"),
 				resultat.getInt("nbpersonne"),resultat.getInt("idchambre"),resultat.getInt("idreservation"),resultat.getInt("idvolaller"),resultat.getInt("idvolretour"));
 		}

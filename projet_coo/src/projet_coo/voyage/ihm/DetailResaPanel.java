@@ -6,11 +6,14 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -214,7 +217,18 @@ public class DetailResaPanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		if(source == supprimer){
-			suppAction();
+			Vol dep = FabriqueVol.getInstance().getVolById(FabriqueReservation.getInstance().getResaById(currentID).getIdVolDepart());
+			String d = new SimpleDateFormat("dd/MM/YYYY").format(dep.getDate());
+			Date currentDate = new Date();
+			String d2 = new SimpleDateFormat("dd/MM/YYYY").format(currentDate);
+			if(currentDate.after(dep.getDate())){
+				JOptionPane.showMessageDialog(null, "Le vol ne peut plus être annulé");
+			}
+			else{
+				suppAction();
+				
+			}
+			
 		}
 	}
 

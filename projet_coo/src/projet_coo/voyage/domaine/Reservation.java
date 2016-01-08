@@ -24,6 +24,8 @@ public class Reservation {
 		this.villeArrive = villeArrive;
 		this.nbVoyageurs = nbVoyageurs;
 		this.idchambre = idchambre;
+		this.idVolDepart = idVolDepart;
+		this.idVolRetour = idVolRetour;
 		this.id = id;
 	}
 	public int getId() {
